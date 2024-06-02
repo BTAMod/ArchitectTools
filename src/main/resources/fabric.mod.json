@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "architectstools",
+  "version": "${version}",
+
+  "name": "Architect's Tools",
+  "description": "A remake of Tinker's Construct for BTA.",
+  "authors": [
+    "kill05"
+  ],
+  "contact": {
+    "homepage": "",
+    "sources": ""
+  },
+
+	"icon": "icon.png",
+  "license": "CC0-1.0",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+			"com.github.kill05.ArchitectTools"
+    ],
+		"afterClientStart": [
+			"com.github.kill05.ArchitectTools"
+		],
+		"recipesReady": [
+			"com.github.kill05.ArchitectTools"
+		]
+	},
+  "mixins": [
+		"mixins.json"
+  ],
+
+  "depends": {
+		"minecraft": "~7.2-beta",
+    "fabricloader": ">=0.15.5",
+		"halplibe": ">=4.0.6-beta"
+  },
+  "suggests": {
+		"btwaila": "1.0.0-7.1"
+  }
+}

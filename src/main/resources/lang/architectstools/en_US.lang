@@ -1,0 +1,23 @@
+item.architectstools.blank_pattern.name = Blank Pattern
+
+tile.architectstools.architect_table.name = Architect's Table
+
+material.architectstools.wood.name = Wooden
+material.architectstools.iron.name = Iron
+material.architectstools.cactus.name = Cactus
+
+part.architectstools.tool_rod.name = Tool Rod
+part.architectstools.tool_binding.name = Tool Binding
+part.architectstools.pickaxe_head.name = Pickaxe Head
+part.architectstools.axe_head.name = Axe Head
+part.architectstools.shovel_head.name = Shovel Head
+part.architectstools.hoe_head.name = Hoe Head
+
+tool.architectstools.pickaxe.name = Pickaxe
+
+mining_level.architectstools.0.name = Stone
+mining_level.architectstools.1.name = Iron
+mining_level.architectstools.2.name = Redstone
+mining_level.architectstools.3.name = Obsidian
+mining_level.architectstools.4.name = Cobalt
+mining_level.architectstools.5.name = Manyullyn
