@@ -4,10 +4,12 @@ import net.minecraft.core.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 
 public class FloatStatistic extends PartStatistic<Float> {
 
-	public static final DecimalFormat FORMAT = new DecimalFormat();
+	public static final DecimalFormat FORMAT = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
 	public FloatStatistic(String id, String color) {
 		super(id, color, Float.class, 0f);
@@ -28,8 +30,4 @@ public class FloatStatistic extends PartStatistic<Float> {
 		return getColor() + FORMAT.format(value);
 	}
 
-
-	static {
-		FORMAT.setMaximumFractionDigits(2);
-	}
 }
