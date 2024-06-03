@@ -2,7 +2,7 @@ package com.github.kill05;
 
 import com.github.kill05.blocks.architectstation.ArchitectTableBlock;
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
-import com.github.kill05.exceptions.InvalidArchitectItemException;
+import com.github.kill05.exceptions.ArchitectItemException;
 import com.github.kill05.exceptions.InvalidMaterialException;
 import com.github.kill05.items.part.ArchitectPart;
 import com.github.kill05.items.part.PartType;
@@ -10,7 +10,6 @@ import com.github.kill05.items.tool.ArchitectTool;
 import com.github.kill05.items.tool.ToolPartInfo;
 import com.github.kill05.materials.ArchitectMaterial;
 import com.github.kill05.utils.ItemUtils;
-import com.github.kill05.utils.TextureUtils;
 import com.mojang.nbt.ListTag;
 import com.mojang.nbt.StringTag;
 import net.fabricmc.api.ModInitializer;
@@ -78,14 +77,14 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	// Materials
 	public static @Nullable ArchitectMaterial getMaterial(@Nullable String id) {
-		if(id == null) return null;
+		if (id == null) return null;
 		return ArchitectMaterial.MATERIAL_REGISTRY.getItem(id);
 	}
 
 	public static @Nullable ArchitectMaterial getMaterial(@Nullable ItemStack item) {
-		if(item == null) return null;
+		if (item == null) return null;
 		for (ArchitectMaterial material : ArchitectMaterial.MATERIAL_REGISTRY) {
-			if(material.isThisMaterial(item)) return material;
+			if (material.isThisMaterial(item)) return material;
 		}
 
 		return null;
@@ -99,13 +98,13 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	public static @NotNull ItemStack createPartStack(@NotNull String material, @NotNull ArchitectPart part) throws InvalidMaterialException {
 		ArchitectMaterial architectMaterial = getMaterial(material);
-		if(architectMaterial == null) throw new InvalidMaterialException("Invalid material: " + material);
+		if (architectMaterial == null) throw new InvalidMaterialException("Invalid material: " + material);
 		return architectMaterial.createPart(part);
 	}
 
 	public static @NotNull ItemStack createPartStack(@NotNull ItemStack material, @NotNull ArchitectPart part) throws InvalidMaterialException {
 		ArchitectMaterial architectMaterial = getMaterial(material);
-		if(architectMaterial == null) throw new InvalidMaterialException("Invalid material: " + material);
+		if (architectMaterial == null) throw new InvalidMaterialException("Invalid material: " + material);
 		return architectMaterial.createPart(part);
 	}
 
@@ -119,20 +118,33 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 
 	// Tools
-	public static ItemStack createToolStack(@NotNull ArchitectTool tool, ItemStack... parts) throws InvalidArchitectItemException {
-		ArchitectMaterial[] materials = new ArchitectMaterial[parts.length];
-		for (int i = 0; i < parts.length; i++) {
-			ItemStack part = parts[i];
-			materials[i] = part != null ? getPartMaterial(part) : null;
+	public static ItemStack createToolStack(@NotNull ArchitectTool tool, ItemStack... itemParts) throws ArchitectItemException {
+		List<ToolPartInfo> expectedInfo = tool.getPartList();
+		int expectedAmount = expectedInfo.size();
+		if (itemParts.length != expectedAmount)
+			throw new ArchitectItemException(String.format("Wrong amount of parts (expected %s, found %s).", expectedAmount, itemParts.length));
+
+		ArchitectMaterial[] materials = new ArchitectMaterial[expectedAmount];
+		for (int i = 0; i < expectedAmount; i++) {
+			ArchitectPart expectedPart = expectedInfo.get(i).part();
+			ItemStack partItem = itemParts[i];
+
+			if (partItem == null) throw new ArchitectItemException("Tool parts can't be null.");
+			if (!(partItem.getItem() instanceof ArchitectPart part))
+				throw new ArchitectItemException(String.format("Tool parts must be ArchitectPart (%s).", partItem.getItem()));
+			if (expectedPart != part)
+				throw new ArchitectItemException(String.format("Invalid ArchitectPart (expected %s, found %s).", expectedPart, part));
+
+			materials[i] = getPartMaterial(partItem);
 		}
 
 		return createToolStack(tool, materials);
 	}
 
-	public static ItemStack createToolStack(@NotNull ArchitectTool tool, ArchitectMaterial... materials) throws InvalidArchitectItemException {
+	public static ItemStack createToolStack(@NotNull ArchitectTool tool, ArchitectMaterial... materials) throws ArchitectItemException {
 		int size = tool.getPartList().size();
-		if(materials.length != size)
-			throw new InvalidArchitectItemException(String.format("Invalid material amount (expected %s, found %s).", size, materials.length));
+		if (materials.length != size)
+			throw new ArchitectItemException(String.format("Invalid material amount (expected %s, found %s).", size, materials.length));
 
 		ItemStack item = new ItemStack(tool);
 
@@ -145,7 +157,7 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	}
 
 	public static void setToolPart(@NotNull ItemStack item, int index, @Nullable ArchitectMaterial material) {
-		if(!(item.getItem() instanceof ArchitectTool tool))
+		if (!(item.getItem() instanceof ArchitectTool tool))
 			throw new IllegalArgumentException("Item must be ArchitectTool.");
 
 		ToolPartInfo info = tool.getPartList().get(index);
@@ -172,18 +184,19 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	public static @Nullable ArchitectMaterial getToolPart(@NotNull ItemStack item, @NotNull PartType part, int partIndex) {
 		ListTag components = ItemUtils.getToolComponents(item, part);
-		if(partIndex >= components.tagCount()) return null;
+		if (partIndex >= components.tagCount()) return null;
 
 		StringTag materialTag = (StringTag) components.tagAt(partIndex);
 		return getMaterial(materialTag.getValue());
 	}
 
 	public static List<Pair<@NotNull ToolPartInfo, @Nullable ArchitectMaterial>> getToolParts(@NotNull ItemStack item, @Nullable PartType type) {
-		if(!(item.getItem() instanceof ArchitectTool tool)) throw new InvalidArchitectItemException("Item is not an ArchitectTool.");
+		if (!(item.getItem() instanceof ArchitectTool tool))
+			throw new ArchitectItemException("Item is not an ArchitectTool.");
 
 		ArrayList<Pair<ToolPartInfo, ArchitectMaterial>> list = new ArrayList<>();
 		for (ToolPartInfo info : tool.getPartList()) {
-			if(type != null && info.type() != type) continue;
+			if (type != null && info.type() != type) continue;
 			list.add(Pair.of(info, getToolPart(item, info)));
 		}
 
@@ -191,7 +204,8 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	}
 
 	public static void iterateToolParts(@NotNull ItemStack item, boolean renderOrder, @NotNull BiConsumer<@NotNull ToolPartInfo, @Nullable ArchitectMaterial> consumer) {
-		if(!(item.getItem() instanceof ArchitectTool tool)) throw new InvalidArchitectItemException("Item is not an ArchitectTool.");
+		if (!(item.getItem() instanceof ArchitectTool tool))
+			throw new ArchitectItemException("Item is not an ArchitectTool.");
 
 		for (ToolPartInfo info : (renderOrder ? tool.getRenderOrder() : tool.getPartList())) {
 			consumer.accept(info, getToolPart(item, info.type(), info.index()));
@@ -199,7 +213,6 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	}
 
 	// Textures
-
 
 
 	// Code
@@ -218,10 +231,13 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	@Override
 	public void afterClientStart() {
 		// Ungodly string fuckery to get textures to load
+		LOGGER.info("Loading textures...");
+		long start = System.currentTimeMillis();
+
 		try {
 			String path = "/assets/" + MOD_ID + "/textures/";
 			URL resource = getClass().getResource(path + "item");
-			if(resource == null) throw new IllegalStateException("Failed to find textures.");
+			if (resource == null) throw new IllegalStateException("Failed to find textures.");
 
 			File file = Paths.get(resource.toURI()).toFile();
 			Iterator<File> iterator = FileUtils.iterateFiles(file, null, true);
@@ -235,31 +251,8 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 			throw new RuntimeException(e);
 		}
 
-		LOGGER.info("Loading tool render overrides...");
-
-		// Register tool render overrides
-		for (ArchitectTool tool : ArchitectTool.VALUES) {
-			int overrides = 0;
-
-			for (ToolPartInfo info : tool.getPartList()) {
-				String path = "item/tool/" + tool.getToolId() + "/" + info.part().getPartId();
-
-				if(TextureUtils.registerTextureIfPresent(path + "_" + info.index())) {
-					overrides++;
-					continue;
-				}
-
-				if(TextureUtils.registerTextureIfPresent(path)) overrides++;
-			}
-
-			LOGGER.info(String.format("Loaded %s override(s) for tool '%s'.", overrides, tool.getToolId()));
-		}
-
-		for(ArchitectPart part : ArchitectPart.VALUES) {
-			TextureUtils.registerTextureIfPresent(MOD_ID + ":item/tool/" + part);
-		}
-
 		Minecraft.getMinecraft(Minecraft.class).renderEngine.refreshTextures(new ArrayList<>());
+		LOGGER.info(String.format("Loaded textures (took %sms).", System.currentTimeMillis() - start));
 	}
 
 
@@ -275,7 +268,6 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	public void initNamespaces() {
 
 	}
-
 
 
 }
