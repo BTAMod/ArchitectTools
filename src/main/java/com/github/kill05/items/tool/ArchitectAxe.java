@@ -11,8 +11,8 @@ public class ArchitectAxe extends ArchitectTool {
 	public ArchitectAxe(int id) {
 		super(id, "axe");
 		addPart(ArchitectPart.AXE_HEAD, PartType.HEAD, "axe/head");
+		addPart(new ToolPartInfo(ArchitectPart.TOOL_BINDING, PartType.EXTRA, "axe/binding").renderPriority(-1));
 		addPart(ArchitectPart.TOOL_ROD, PartType.HANDLE, "pickaxe/handle");
-		addPart(ArchitectPart.TOOL_BINDING, PartType.EXTRA, "axe/binding");
 	}
 
 	@Override

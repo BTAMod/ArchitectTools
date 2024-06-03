@@ -3,9 +3,9 @@ package com.github.kill05.materials;
 import com.github.kill05.ArchitectTools;
 import com.github.kill05.MiningLevel;
 import com.github.kill05.items.part.ArchitectPart;
-import com.github.kill05.items.part.info.ExtraStatistics;
-import com.github.kill05.items.part.info.HeadStatistics;
-import com.github.kill05.items.part.info.HandleStatistics;
+import com.github.kill05.items.part.PartType;
+import com.github.kill05.items.part.statistics.PartStatistics;
+import com.github.kill05.items.part.statistics.PartStatistic;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.data.registry.Registries;
 import net.minecraft.core.data.registry.Registry;
@@ -16,58 +16,68 @@ import net.minecraft.core.lang.I18n;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
 
 public class ArchitectMaterial {
 
 	public static final Registry<ArchitectMaterial> MATERIAL_REGISTRY = new Registry<>();
 
 	public static final ArchitectMaterial WOOD = new ArchitectMaterial("wood", "#876627")
-		.headStats(new HeadStatistics(64, MiningLevel.STONE, 2.0f))
-		.handleStats(new HandleStatistics(30))
-		.extraStats(new ExtraStatistics(10))
+		.headStats(64, MiningLevel.STONE, 2.0f, 5f)
+		.handleStats(15)
+		.extraStats(-10)
 		.addItemGroup("minecraft:planks");
 
+	public static final ArchitectMaterial STONE = new ArchitectMaterial("stone", "#B1AFAD")
+		.headStats(30, MiningLevel.STONE, 2.5f, 4f)
+		.handleStats(-20)
+		.extraStats(-20)
+		.addItemGroup("minecraft:cobblestones");
+
 	public static final ArchitectMaterial FLINT = new ArchitectMaterial("flint", "#828282", MaterialType.CONTRAST)
-		.headStats(new HeadStatistics(120, MiningLevel.IRON, 4.0f))
-		.handleStats(new HandleStatistics(-30))
-		.extraStats(new ExtraStatistics(30))
+		.headStats(120, MiningLevel.IRON, 4.0f, 6f)
+		.handleStats(-30)
+		.extraStats(30)
 		.addItems(Item.flint);
 
 	public static final ArchitectMaterial BONE = new ArchitectMaterial("bone", "#ffffff", MaterialType.BONE)
 		.addItems(Item.bone);
 
 	public static final ArchitectMaterial CACTUS = new ArchitectMaterial("cactus", "#ffffff", MaterialType.CACTUS)
-		.headStats(new HeadStatistics(80, MiningLevel.STONE, 3.0f))
-		.handleStats(new HandleStatistics(-10))
-		.extraStats(new ExtraStatistics(-10))
+		.headStats(80, MiningLevel.STONE, 3.0f, 6f)
+		.handleStats(-10)
+		.extraStats(-10)
 		.addItems(Block.cactus);
 
 	public static final ArchitectMaterial PAPER = new ArchitectMaterial("paper", "#ffffff", MaterialType.PAPER)
-		.headStats(new HeadStatistics(20, MiningLevel.STONE, 1.5f))
-		.handleStats(new HandleStatistics(-10))
-		.extraStats(new ExtraStatistics(-10))
+		.headStats(20, MiningLevel.STONE, 1.5f, 2.5f)
+		.handleStats(-10)
+		.extraStats(-10)
 		.addItems(Item.paper);
 
 
+	public static final ArchitectMaterial OBSIDIAN = new ArchitectMaterial("obsidian", "#3B2754")
+		.headStats(650, MiningLevel.OBSIDIAN, 4.5f, 6.5f)
+		.handleStats(-50)
+		.extraStats(50)
+		.addItems(Block.obsidian);
+
 	public static final ArchitectMaterial IRON = new ArchitectMaterial("iron", "#D8D8D8")
-		.headStats(new HeadStatistics(300, MiningLevel.REDSTONE, 6.0f))
-		.handleStats(new HandleStatistics(40))
-		.extraStats(new ExtraStatistics(40))
+		.headStats(300, MiningLevel.DIAMOND, 6.0f, 7f)
+		.handleStats(40)
+		.extraStats(40)
 		.addItems(Item.ingotIron);
 
 	public static final ArchitectMaterial GOLD = new ArchitectMaterial("gold", "#FDF55F")
-		.handleStats(new HandleStatistics(-50))
-		.extraStats(new ExtraStatistics(75))
+		.handleStats(-50)
+		.extraStats(75)
 		.addItems(Item.ingotGold);
 
 	public static final ArchitectMaterial STEEL = new ArchitectMaterial("steel", "#959595")
-		.headStats(new HeadStatistics(900, MiningLevel.COBALT, 7.0f))
-		.handleStats(new HandleStatistics(90))
-		.extraStats(new ExtraStatistics(-20))
+		.headStats(900, MiningLevel.COBALT, 7.0f, 9f)
+		.handleStats(90)
+		.extraStats(-20)
 		.addItems(Item.ingotSteel);
 
 
@@ -75,15 +85,14 @@ public class ArchitectMaterial {
 	private final Color color;
 	private final MaterialType type;
 	private final Collection<ItemStack> items;
-	private HeadStatistics headStatistics;
-	private HandleStatistics handleStatistics;
-	private ExtraStatistics extraStatistics;
+	private final Map<PartType, PartStatistics> statisticsMap;
 
 	public ArchitectMaterial(@NotNull String id, @NotNull String color, @NotNull MaterialType type) {
 		this.id = id;
 		this.color = Color.decode(color);
 		this.type = type;
 		this.items = new HashSet<>();
+		this.statisticsMap = new HashMap<>();
 
 		MATERIAL_REGISTRY.register(id(), this);
 	}
@@ -130,31 +139,41 @@ public class ArchitectMaterial {
 	}
 
 
-	public ArchitectMaterial headStats(HeadStatistics headStatistics) {
-		this.headStatistics = headStatistics;
+	protected ArchitectMaterial headStats(int durability, int miningLevel, float miningSpeed, float entityDamage) {
+		PartStatistics statistics = new PartStatistics(durability);
+		statistics.setStatistic(PartStatistic.MINING_LEVEL, miningLevel);
+		statistics.setStatistic(PartStatistic.MINING_SPEED, miningSpeed);
+		statistics.setStatistic(PartStatistic.ENTITY_DAMAGE, entityDamage);
+		statisticsMap.put(PartType.HEAD, statistics);
 		return this;
 	}
 
-	public ArchitectMaterial handleStats(HandleStatistics handleStatistics) {
-		this.handleStatistics = handleStatistics;
+	protected ArchitectMaterial handleStats(int durability) {
+		PartStatistics statistics = new PartStatistics(durability);
+		statisticsMap.put(PartType.HANDLE, statistics);
 		return this;
 	}
 
-	public ArchitectMaterial extraStats(ExtraStatistics extraStatistics) {
-		this.extraStatistics = extraStatistics;
+	protected ArchitectMaterial extraStats(int durability) {
+		PartStatistics statistics = new PartStatistics(durability);
+		statisticsMap.put(PartType.EXTRA, statistics);
 		return this;
 	}
 
-	public HeadStatistics getHeadStatistics() {
-		return headStatistics;
+	public PartStatistics getStatistics(PartType type) {
+		return statisticsMap.get(type);
 	}
 
-	public HandleStatistics getToolRodStatistics() {
-		return handleStatistics;
+	public PartStatistics getHeadStatistics() {
+		return getStatistics(PartType.HEAD);
 	}
 
-	public ExtraStatistics getExtraStatistics() {
-		return extraStatistics;
+	public PartStatistics getHandleStatistics() {
+		return getStatistics(PartType.HANDLE);
+	}
+
+	public PartStatistics getExtraStatistics() {
+		return getStatistics(PartType.EXTRA);
 	}
 
 
