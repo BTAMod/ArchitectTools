@@ -41,7 +41,7 @@ public class ArchitectMaterial {
 		.extraStats(30)
 		.addItems(Item.flint);
 
-	public static final ArchitectMaterial BONE = new ArchitectMaterial("bone", "#ffffff", MaterialType.BONE)
+	public static final ArchitectMaterial BONE = new ArchitectMaterial("bone", "#E8E5D2", MaterialType.BONE)
 		.addItems(Item.bone);
 
 	public static final ArchitectMaterial CACTUS = new ArchitectMaterial("cactus", "#ffffff", MaterialType.CACTUS)

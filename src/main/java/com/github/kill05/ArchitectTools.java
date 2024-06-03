@@ -212,8 +212,6 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 		}
 	}
 
-	// Textures
-
 
 	// Code
 	@Override
