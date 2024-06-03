@@ -18,13 +18,15 @@ public class ArchitectPickaxe extends ArchitectTool {
 
 		addValidStatistic(PartStatistic.MINING_LEVEL);
 		addValidStatistic(PartStatistic.MINING_SPEED);
-		addValidStatistic(PartStatistic.ENTITY_DAMAGE);
+		addValidStatistic(PartStatistic.ENTITY_DAMAGE, 0.5f);
+
+		addMineableTags(BlockTags.MINEABLE_BY_PICKAXE);
 	}
 
 	@Override
 	public boolean canHarvestBlock(ItemStack itemStack, Block block) {
 		Integer requiredLevel = ItemToolPickaxe.miningLevels.get(block);
-		if(requiredLevel == null) return block.hasTag(BlockTags.MINEABLE_BY_PICKAXE);
+		if(requiredLevel == null) return super.canHarvestBlock(itemStack, block);
 		return getStatistic(itemStack, PartStatistic.MINING_LEVEL) >= requiredLevel;
 	}
 
