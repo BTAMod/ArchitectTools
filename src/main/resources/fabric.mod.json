@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Architect's Tools",
-  "description": "A remake of Tinker's Construct for BTA.",
+  "description": "A port of Tinker's Construct for BTA.",
   "authors": [
     "kill05"
   ],
