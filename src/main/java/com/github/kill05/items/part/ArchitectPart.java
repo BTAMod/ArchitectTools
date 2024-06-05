@@ -64,14 +64,14 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 
 
 	public String getTranslatedPartName() {
-		return I18n.getInstance().translateNameKey("part." + ArchitectTools.MOD_ID + "." + getPartId());
+		return I18n.getInstance().translateNameKey("item." + ArchitectTools.MOD_ID + "." + getPartId());
 	}
 
 	@Override
 	public String getTranslatedName(ItemStack itemstack) {
 		ArchitectMaterial material = ArchitectTools.getPartMaterial(itemstack);
 		String materialName = material != null ? material.getTranslatedName() : "ERROR";
-		return materialName + " " + getTranslatedPartName();
+		return String.format(getTranslatedPartName(), materialName);
 	}
 
 	@Override

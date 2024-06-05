@@ -14,7 +14,6 @@ import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.EntityLiving;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
-import net.minecraft.core.lang.I18n;
 import net.minecraft.core.world.World;
 import sunsetsatellite.catalyst.core.util.ICustomDescription;
 import turniplabs.halplibe.helper.ItemBuilder;
@@ -103,8 +102,8 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 	@Override
 	public String getTranslatedName(ItemStack itemstack) {
 		ArchitectMaterial part = ArchitectTools.getToolPart(itemstack, PartType.HEAD, 0);
-		String name = part != null ? part.getTranslatedName() : "ERROR";
-		return name + " " + I18n.getInstance().translateNameKey("tool." + ArchitectTools.MOD_ID + "." + getToolId());
+		String material = part != null ? part.getTranslatedName() : "ERROR";
+		return String.format(super.getTranslatedName(itemstack), material);
 	}
 
 	@Override
