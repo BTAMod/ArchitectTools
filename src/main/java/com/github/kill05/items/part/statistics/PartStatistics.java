@@ -3,9 +3,10 @@ package com.github.kill05.items.part.statistics;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
-public class PartStatistics {
+public class PartStatistics implements Iterable<Map.Entry<PartStatistic<?>, Object>> {
 
 	private final Map<PartStatistic<?>, Object> statisticMap;
 
@@ -31,5 +32,12 @@ public class PartStatistics {
 
 	public boolean hasStatistic(PartStatistic<?> statistic) {
 		return statisticMap.containsKey(statistic);
+	}
+
+
+	@NotNull
+	@Override
+	public Iterator<Map.Entry<PartStatistic<?>, Object>> iterator() {
+		return statisticMap.entrySet().iterator();
 	}
 }

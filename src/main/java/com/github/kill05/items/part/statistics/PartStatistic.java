@@ -36,7 +36,21 @@ public abstract class PartStatistic<V extends Number> {
 
 	public abstract @NotNull V multiplyValue(@NotNull V value, float mult);
 
-	public abstract String formatValue(ItemStack itemStack, V value);
+	public abstract String formatToolValue(ItemStack itemStack, V value);
+
+	public String formatPartValue(ItemStack itemStack, V value) {
+		return formatToolValue(itemStack, value);
+	}
+
+	@SuppressWarnings("unchecked")
+	public String formatToolValue(ItemStack itemStack, Object value) throws ClassCastException {
+		return formatToolValue(itemStack, (V) value);
+	}
+
+	@SuppressWarnings("unchecked")
+	public String formatPartValue(ItemStack itemStack, Object value) {
+		return formatPartValue(itemStack, (V) value);
+	}
 
 
 	public String getTranslatedName() {

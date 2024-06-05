@@ -107,15 +107,14 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 		return name + " " + I18n.getInstance().translateNameKey("tool." + ArchitectTools.MOD_ID + "." + getToolId());
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public String getDescription(ItemStack itemStack) {
 		StringBuilder builder = new StringBuilder();
 
 		Iterator<PartStatistic<?>> iterator = getValidStatistics().keySet().iterator();
 		while (iterator.hasNext()) {
-			PartStatistic<Number> stat = (PartStatistic<Number>) iterator.next();
-			String formatted = stat.formatValue(itemStack, getStatistic(itemStack, stat));
+			PartStatistic<?> stat = iterator.next();
+			String formatted = stat.formatToolValue(itemStack, getStatistic(itemStack, stat));
 
 			builder.append("§8");
 			builder.append(stat.getTranslatedName());

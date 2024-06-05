@@ -6,11 +6,11 @@ import net.minecraft.core.item.ItemStack;
 public class MiningLevelStatistic extends IntegerStatistic {
 
 	public MiningLevelStatistic(String id) {
-		super(id, null);
+		super(id, "§2");
 	}
 
 	@Override
-	public String formatValue(ItemStack itemStack, Integer value) {
-		return MiningLevel.getTranslatedMiningLevel(value);
+	public String formatToolValue(ItemStack itemStack, Integer value) {
+		return getColor() + MiningLevel.getTranslatedMiningLevel(value);
 	}
 }

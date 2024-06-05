@@ -20,7 +20,7 @@ public class IntegerStatistic extends PartStatistic<Integer> {
 	}
 
 	@Override
-	public String formatValue(ItemStack itemStack, Integer value) {
+	public String formatToolValue(ItemStack itemStack, Integer value) {
 		return getColor() + value;
 	}
 }

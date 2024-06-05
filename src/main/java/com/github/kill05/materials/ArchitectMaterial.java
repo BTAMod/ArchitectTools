@@ -92,7 +92,7 @@ public class ArchitectMaterial {
 		this.color = Color.decode(color);
 		this.type = type;
 		this.items = new HashSet<>();
-		this.statisticsMap = new HashMap<>();
+		this.statisticsMap = new LinkedHashMap<>();
 
 		MATERIAL_REGISTRY.register(id(), this);
 	}

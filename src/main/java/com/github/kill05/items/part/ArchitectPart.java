@@ -3,18 +3,23 @@ package com.github.kill05.items.part;
 import com.github.kill05.ArchitectTools;
 import com.github.kill05.items.ArchitectItem;
 import com.github.kill05.items.model.ArchitectPartModel;
+import com.github.kill05.items.part.statistics.PartStatistic;
+import com.github.kill05.items.part.statistics.PartStatistics;
 import com.github.kill05.materials.ArchitectMaterial;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.lang.I18n;
 import net.minecraft.core.world.World;
+import sunsetsatellite.catalyst.core.util.ICustomDescription;
 import turniplabs.halplibe.helper.ItemBuilder;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
-public class ArchitectPart extends Item implements ArchitectItem {
+public class ArchitectPart extends Item implements ArchitectItem, ICustomDescription {
 
 	public static final List<ArchitectPart> VALUES = new ArrayList<>();
 
@@ -67,6 +72,37 @@ public class ArchitectPart extends Item implements ArchitectItem {
 		ArchitectMaterial material = ArchitectTools.getPartMaterial(itemstack);
 		String materialName = material != null ? material.getTranslatedName() : "ERROR";
 		return materialName + " " + getTranslatedPartName();
+	}
+
+	@Override
+	public String getDescription(ItemStack itemStack) {
+		ArchitectMaterial material = ArchitectTools.getPartMaterial(itemStack);
+		if(material == null) return "ERROR";
+
+		StringBuilder builder = new StringBuilder();
+		Iterator<PartType> iterator = validTypes.iterator();
+
+		while (iterator.hasNext()) {
+			PartType type = iterator.next();
+			PartStatistics statistics = material.getStatistics(type);
+			if(statistics == null) continue; // Material is not compatible with this statistic
+			// (ex. HEAD and gold because you can't make gold pickaxe heads)
+
+			builder.append("§1").append(type.getTranslatedName()).append(":\n");
+			Iterator<Map.Entry<PartStatistic<?>, Object>> iterator1 = statistics.iterator();
+			while (iterator1.hasNext()) {
+				Map.Entry<PartStatistic<?>, Object> next = iterator1.next();
+				builder.append(' ');
+				builder.append(next.getKey().getTranslatedName()).append(": ");
+				builder.append(next.getKey().formatPartValue(itemStack, next.getValue()));
+				if(iterator1.hasNext()) builder.append('\n');
+			}
+
+			builder.append('\n');
+			if(iterator.hasNext()) builder.append("\n");
+		}
+
+		return builder.toString();
 	}
 
 	@Override

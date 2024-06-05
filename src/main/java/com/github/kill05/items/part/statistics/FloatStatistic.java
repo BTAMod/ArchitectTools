@@ -26,7 +26,7 @@ public class FloatStatistic extends PartStatistic<Float> {
 	}
 
 	@Override
-	public String formatValue(ItemStack itemStack, Float value) {
+	public String formatToolValue(ItemStack itemStack, Float value) {
 		return getColor() + FORMAT.format(value);
 	}
 
