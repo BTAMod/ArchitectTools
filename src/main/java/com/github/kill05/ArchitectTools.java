@@ -16,10 +16,10 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.stitcher.TextureRegistry;
 import net.minecraft.core.block.Block;
+import net.minecraft.core.data.DataLoader;
 import net.minecraft.core.data.registry.Registries;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,14 +32,16 @@ import turniplabs.halplibe.helper.RecipeBuilder;
 import turniplabs.halplibe.util.ClientStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
 
-import java.io.File;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 
 
 public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, ClientStartEntrypoint {
@@ -228,25 +230,63 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	@Override
 	public void afterClientStart() {
-		// Ungodly string fuckery to get textures to load
+		// This is awful, but required until 7.2-pre2 comes out
 		LOGGER.info("Loading textures...");
 		long start = System.currentTimeMillis();
 
+		String path = String.format("%s/%s/%s", "/assets", MOD_ID, TextureRegistry.itemAtlas.directoryPath);
+		URI uri;
 		try {
-			String path = "/assets/" + MOD_ID + "/textures/";
-			URL resource = getClass().getResource(path + "item");
-			if (resource == null) throw new IllegalStateException("Failed to find textures.");
-
-			File file = Paths.get(resource.toURI()).toFile();
-			Iterator<File> iterator = FileUtils.iterateFiles(file, null, true);
-			while (iterator.hasNext()) {
-				String path1 = iterator.next().getPath().replace('\\', '/');
-				String cutPath = path1.split(path)[1];
-				cutPath = cutPath.substring(0, cutPath.length() - 4);
-				TextureRegistry.getTexture(MOD_ID + ":" + cutPath);
-			}
+			uri = DataLoader.class.getResource(path).toURI();
 		} catch (URISyntaxException e) {
 			throw new RuntimeException(e);
+		}
+		FileSystem fileSystem = null;
+		Path myPath;
+		if (uri.getScheme().equals("jar")) {
+			try {
+				fileSystem = FileSystems.newFileSystem(uri, Collections.emptyMap());
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+			myPath = fileSystem.getPath(path);
+		} else {
+			myPath = Paths.get(uri);
+		}
+
+		Stream<Path> walk;
+		try {
+			walk = Files.walk(myPath, Integer.MAX_VALUE);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		Iterator<Path> it = walk.iterator();
+
+		while(it.hasNext()) {
+			Path file = it.next();
+			String name = file.getFileName().toString();
+			if (name.endsWith(".png")) {
+				String path1 = file.toString().replace(file.getFileSystem().getSeparator(), "/");
+				String cutPath = path1.split(path)[1];
+				cutPath = cutPath.substring(0, cutPath.length() - 4);
+				System.out.println(cutPath);
+				TextureRegistry.getTexture(MOD_ID + ":item" + cutPath);
+			}
+		}
+
+		walk.close();
+		if (fileSystem != null) {
+			try {
+				fileSystem.close();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+
+		try {
+			TextureRegistry.initializeAllFiles(MOD_ID, TextureRegistry.itemAtlas);
+		} catch (URISyntaxException | IOException e) {
+			throw new RuntimeException("Failed to load textures.", e);
 		}
 
 		Minecraft.getMinecraft(Minecraft.class).renderEngine.refreshTextures(new ArrayList<>());
