@@ -59,15 +59,27 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 	}
 
 
-	@Override
-	public float getStrVsBlock(ItemStack itemStack, Block block) {
-		return canHarvestBlock(itemStack, block) ? getStatistic(itemStack, PartStatistic.MINING_SPEED) : super.getStrVsBlock(itemStack, block);
-	}
-
 	//todo: remove once 7.2-pre2 comes out (need itemstack argument)
 	@Override
 	public boolean canHarvestBlock(Block block) {
 		throw new UnsupportedOperationException("Use canHarvestBlock(ItemStack, Block) instead.");
+	}
+
+	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
+	@Override
+	public int getDamageVsEntity(Entity entity) {
+		throw new UnsupportedOperationException("use getDamageVsEntity(Entity, ItemStack) instead.");
+	}
+
+	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
+	@Override
+	public int getMaxDamage() {
+		throw new UnsupportedOperationException("Use getMaxDamage(ItemStack) instead.");
+	}
+
+	@Override
+	public float getStrVsBlock(ItemStack itemStack, Block block) {
+		return canHarvestBlock(itemStack, block) ? getStatistic(itemStack, PartStatistic.MINING_SPEED) : super.getStrVsBlock(itemStack, block);
 	}
 
 	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
@@ -79,17 +91,15 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 		return false;
 	}
 
-	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
-	@Override
-	public int getDamageVsEntity(Entity entity) {
-		return super.getDamageVsEntity(entity);
+	public int getDamageVsEntity(Entity entity, ItemStack itemStack) {
+		return getStatistic(itemStack, PartStatistic.ENTITY_DAMAGE).intValue();
 	}
 
-	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
-	@Override
-	public int getMaxDamage() {
-		return super.getMaxDamage();
+	public int getMaxDamage(ItemStack itemStack) {
+		return getStatistic(itemStack, PartStatistic.DURABILITY);
 	}
+
+
 
 	@Override
 	public boolean onBlockDestroyed(World world, ItemStack itemstack, int blockId, int x, int y, int z, EntityLiving entityliving) {
