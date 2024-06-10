@@ -2,8 +2,11 @@ package com.github.kill05.blocks.architectstation.tool;
 
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
 import com.github.kill05.inventory.container.TileContainer;
+import com.github.kill05.items.tool.ArchitectTool;
+import com.github.kill05.items.tool.ToolPartInfo;
 import net.minecraft.core.InventoryAction;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.item.Item;
 import net.minecraft.core.player.inventory.slot.Slot;
 
 import java.util.List;
@@ -22,12 +25,28 @@ public class ToolModeContainer extends TileContainer {
 	}
 
 	@Override
-	public List<Integer> getMoveSlots(InventoryAction inventoryAction, Slot slot, int i, EntityPlayer entityPlayer) {
+	public List<Integer> getMoveSlots(InventoryAction inventoryAction, Slot slot, int j, EntityPlayer entityPlayer) {
 		return null;
 	}
 
 	@Override
-	public List<Integer> getTargetSlots(InventoryAction inventoryAction, Slot slot, int i, EntityPlayer entityPlayer) {
-		return null;
+	public List<Integer> getTargetSlots(InventoryAction inventoryAction, Slot slot, int j, EntityPlayer entityPlayer) {
+		if (slot.getInventory() == entityPlayer.inventory) {
+			Item item = slot.getStack().getItem();
+			ArchitectTool selectedTool = getTile().getSelectedTool();
+			if(selectedTool == null) return null;
+
+			List<ToolPartInfo> partList = selectedTool.getPartList();
+			for (int i = 0; i < partList.size(); i++) {
+				if(partList.get(i).part() == item) return List.of(i);
+			}
+		}
+
+		return getSlots(4, 36, true);
+	}
+
+	@Override
+	public ArchitectTableTileEntity getTile() {
+		return (ArchitectTableTileEntity) super.getTile();
 	}
 }

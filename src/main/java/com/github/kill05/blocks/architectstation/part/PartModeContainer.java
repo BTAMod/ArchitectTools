@@ -1,5 +1,6 @@
 package com.github.kill05.blocks.architectstation.part;
 
+import com.github.kill05.ArchitectTools;
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
 import com.github.kill05.inventory.container.TileContainer;
 import net.minecraft.core.InventoryAction;
@@ -37,6 +38,18 @@ public class PartModeContainer extends TileContainer {
 
 	@Override
 	public List<Integer> getTargetSlots(InventoryAction inventoryAction, Slot slot, int i, EntityPlayer entityPlayer) {
-		return null;
+		if (slot.getInventory() == entityPlayer.inventory) {
+			if (slot.getStack().getItem() == ArchitectTools.BLANK_PATTERN) {
+				return List.of(0);
+			}
+
+			if(ArchitectTools.getMaterial(slot.getStack()) != null) {
+				return List.of(1);
+			}
+
+			return null;
+		}
+
+		return getSlots(3, 36, true);
 	}
 }

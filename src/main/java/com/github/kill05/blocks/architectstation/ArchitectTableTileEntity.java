@@ -8,6 +8,8 @@ import com.mojang.nbt.CompoundTag;
 import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.player.inventory.IInventory;
 import net.minecraft.core.player.inventory.InventoryBasic;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ArchitectTableTileEntity extends TileEntity {
 
@@ -42,19 +44,19 @@ public class ArchitectTableTileEntity extends TileEntity {
 	}
 
 
-	public IInventory getPartInventory() {
+	public @NotNull IInventory getPartInventory() {
 		return partInventory;
 	}
 
-	public IInventory getToolInventory() {
+	public @NotNull IInventory getToolInventory() {
 		return toolInventory;
 	}
 
-	public ArchitectPart getSelectedPart() {
+	public @Nullable ArchitectPart getSelectedPart() {
 		return selectedPart;
 	}
 
-	public ArchitectTool getSelectedTool() {
+	public @Nullable ArchitectTool getSelectedTool() {
 		return selectedTool;
 	}
 
