@@ -53,6 +53,7 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 		this.toolId = toolId;
 		this.ordinal = VALUES.size();
 
+		setMaxStackSize(1);
 		addValidStatistic(PartStatistic.DURABILITY);
 
 		VALUES.add(this);
@@ -98,7 +99,6 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 	public int getMaxDamage(ItemStack itemStack) {
 		return getStatistic(itemStack, PartStatistic.DURABILITY);
 	}
-
 
 
 	@Override
