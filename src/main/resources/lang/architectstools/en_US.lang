@@ -20,6 +20,10 @@ item.architectstools.pickaxe_head_part.desc = A hefty pickaxe head used to craft
 item.architectstools.axe_head.desc = A whetted axe head used to craft axes.
 item.architectstools.shovel_head.desc = A broad shovel head used to craft shovels.
 
+item.architectstools.pickaxe_tool.desc = A skillfully crafted pickaxe.
+item.architectstools.axe_tool.desc = A skillfully crafted axe.
+item.architectstools.shovel_tool.desc = A skillfully crafted shovel.
+
 
 # Blocks
 tile.architectstools.architect_table.name = Architect's Table

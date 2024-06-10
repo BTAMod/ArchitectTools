@@ -119,10 +119,10 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 			builder.append(stat.getTranslatedName());
 			builder.append(": ");
 			builder.append(formatted);
-			if(iterator.hasNext()) builder.append("\n");
+			if(iterator.hasNext()) builder.append('\n');
 		}
 
-		return builder.toString();
+		return builder.append('\n').toString();
 	}
 
 
