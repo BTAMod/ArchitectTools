@@ -1,6 +1,7 @@
 package com.github.kill05.items.part;
 
 import com.github.kill05.ArchitectTools;
+import com.github.kill05.config.ArchitectConfig;
 import com.github.kill05.items.ArchitectItem;
 import com.github.kill05.items.model.ArchitectPartModel;
 import com.github.kill05.items.part.statistics.PartStatistic;
@@ -60,7 +61,7 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 	private final List<PartType> validTypes;
 
 	public ArchitectPart(String partId) {
-		super(partId + "_part", ArchitectTools.PART_ID++);
+		super(partId + "_part", ArchitectConfig.PART_ID++);
 		this.partId = partId;
 		this.ordinal = VALUES.size();
 		this.validTypes = new ArrayList<>();

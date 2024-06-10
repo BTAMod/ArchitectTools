@@ -210,4 +210,9 @@ public class ArchitectMaterial {
 	public int hashCode() {
 		return Objects.hash(id);
 	}
+
+
+	static {
+		new Registries();
+	}
 }

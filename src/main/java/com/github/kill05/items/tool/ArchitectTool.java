@@ -1,6 +1,7 @@
 package com.github.kill05.items.tool;
 
 import com.github.kill05.ArchitectTools;
+import com.github.kill05.config.ArchitectConfig;
 import com.github.kill05.items.ArchitectItem;
 import com.github.kill05.items.model.ArchitectToolModel;
 import com.github.kill05.items.part.ArchitectPart;
@@ -45,7 +46,7 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 	private final Collection<Tag<Block>> mineableTags;
 
 	public ArchitectTool(String toolId) {
-		super(toolId + "_tool", ArchitectTools.TOOL_ID++);
+		super(toolId + "_tool", ArchitectConfig.TOOL_ID++);
 		this.validStatistics = new LinkedHashMap<>();
 		this.partList = new ArrayList<>();
 		this.renderOrder = new ArrayList<>();

@@ -2,6 +2,7 @@ package com.github.kill05;
 
 import com.github.kill05.blocks.architectstation.ArchitectTableBlock;
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
+import com.github.kill05.config.ArchitectConfig;
 import com.github.kill05.exceptions.ArchitectItemException;
 import com.github.kill05.exceptions.InvalidMaterialException;
 import com.github.kill05.items.part.ArchitectPart;
@@ -11,13 +12,13 @@ import com.github.kill05.items.tool.ToolPartInfo;
 import com.github.kill05.materials.ArchitectMaterial;
 import com.github.kill05.utils.ClassUtils;
 import com.github.kill05.utils.ItemUtils;
-import com.mojang.nbt.*;
+import com.mojang.nbt.ListTag;
+import com.mojang.nbt.StringTag;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.stitcher.TextureRegistry;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.data.DataLoader;
-import net.minecraft.core.data.registry.Registries;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
@@ -31,8 +32,6 @@ import turniplabs.halplibe.helper.ItemBuilder;
 import turniplabs.halplibe.helper.RecipeBuilder;
 import turniplabs.halplibe.util.ClientStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
-import turniplabs.halplibe.util.TomlConfigHandler;
-import turniplabs.halplibe.util.toml.Toml;
 
 import java.io.IOException;
 import java.net.URI;
@@ -50,37 +49,7 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	public static final String MOD_ID = "architectstools";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
-	public static final TomlConfigHandler CONFIG;
 	public static final int MAX_TOOL_PARTS = 3;
-
-	public static int PART_ID;
-	public static int TOOL_ID;
-	public static int ITEM_ID;
-
-	public static int BLOCK_ID;
-
-	static {
-		new Registries();
-		Toml toml = new Toml();
-
-		// Id
-		toml.addCategory("Set from which ID each category of blocks/items should start registering.", "IDs");
-		toml.addEntry("IDs.Parts", 23000);
-		toml.addEntry("IDs.Tools", 23100);
-		toml.addEntry("IDs.Items", 23200);
-		toml.addEntry("IDs.Blocks", 1500);
-
-		// Gameplay
-		//toml.addCategory("Change how the game and the mod are played.", "Gameplay");
-		//toml.addEntry("Gameplay.DisableOtherTools", "Set to true to disable vanilla tools so players can only use tools from Architect's Tools.", false);
-
-		CONFIG = new TomlConfigHandler(MOD_ID, toml);
-
-		PART_ID = toml.get("IDs.Parts", Integer.class);
-		TOOL_ID = toml.get("IDs.Tools", Integer.class);
-		ITEM_ID = toml.get("IDs.Items", Integer.class);
-		BLOCK_ID = toml.get("IDs.Blocks", Integer.class);
-	}
 
 
 	// Items and Blocks
@@ -99,9 +68,8 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	public static Item item(String name, String texture) {
 		return new ItemBuilder(MOD_ID)
 			.setIcon(MOD_ID + ":item/" + texture)
-			.build(new Item(name, ITEM_ID++));
+			.build(new Item(name, ArchitectConfig.ITEM_ID++));
 	}
-
 
 	// Materials
 	public static @Nullable ArchitectMaterial getMaterial(@Nullable String id) {
