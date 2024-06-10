@@ -23,6 +23,7 @@ public class ArchitectToolModel extends ItemModelStandard {
 
 	public ArchitectToolModel(ArchitectTool item) {
 		super(item, null);
+		bFull3D = true;
 	}
 
 	@Override
