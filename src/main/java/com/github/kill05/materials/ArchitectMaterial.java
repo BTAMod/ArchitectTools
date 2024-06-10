@@ -74,7 +74,7 @@ public class ArchitectMaterial {
 		.extraStats(75)
 		.addItems(Item.ingotGold);
 
-	public static final ArchitectMaterial STEEL = new ArchitectMaterial("steel", "#959595")
+	public static final ArchitectMaterial STEEL = new ArchitectMaterial("steel", "#505050")
 		.headStats(900, MiningLevel.COBALT, 7.0f, 9f)
 		.handleStats(90)
 		.extraStats(-20)
