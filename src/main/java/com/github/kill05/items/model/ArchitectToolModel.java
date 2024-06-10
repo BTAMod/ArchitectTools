@@ -4,14 +4,18 @@ import com.github.kill05.ArchitectTools;
 import com.github.kill05.items.tool.ArchitectTool;
 import com.github.kill05.items.tool.ToolPartInfo;
 import com.github.kill05.materials.ArchitectMaterial;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.FontRenderer;
 import net.minecraft.client.render.RenderEngine;
 import net.minecraft.client.render.item.model.ItemModelStandard;
 import net.minecraft.client.render.tessellator.Tessellator;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.Random;
 
 public class ArchitectToolModel extends ItemModelStandard {
 
@@ -34,6 +38,20 @@ public class ArchitectToolModel extends ItemModelStandard {
 		ArchitectTools.iterateToolParts(itemStack, true, (part, material) -> {
 			setIconAndColor(itemStack, null, part, material);
 			super.renderItemIntoGui(tessellator, fontrenderer, renderengine, itemStack, x, y, brightness, alpha);
+		});
+	}
+
+	@Override
+	public void renderAsItemEntity(Tessellator tessellator, @Nullable Entity entity, Random random, ItemStack itemStack, int renderCount, float yaw, float brightness, float partialTick) {
+		if(Minecraft.getMinecraft(Minecraft.class).gameSettings.items3D.value) {
+			super.renderAsItemEntity(tessellator, entity, random, itemStack, renderCount, yaw, brightness, partialTick);
+			return;
+		}
+
+		ArchitectTools.iterateToolParts(itemStack, true, (part, material) -> {
+			setIconAndColor(itemStack, entity, part, material);
+			super.renderAsItemEntity(tessellator, entity, random, itemStack, renderCount, yaw, brightness, partialTick);
+			GL11.glScalef(2F, 2F, 2F);
 		});
 	}
 
