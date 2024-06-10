@@ -60,7 +60,7 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	// Items and Blocks
 	public static final Item BLANK_PATTERN = item("blank_pattern", "blank_pattern");
 
-	public static final Block ARCHITECT_STATION = new BlockBuilder(MOD_ID)
+	public static final Block ARCHITECT_TABLE_BLOCK = new BlockBuilder(MOD_ID)
 		.build(new ArchitectTableBlock(BLOCK_ID++));
 
 
@@ -305,6 +305,14 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 			.addInput('x', Item.stick)
 			.addInput('o', "minecraft:planks")
 			.create("pattern", BLANK_PATTERN.getDefaultStack());
+
+		RecipeBuilder.Shaped(MOD_ID, "pbp", "lwl", "pcp")
+			.addInput('p', "minecraft:planks")
+			.addInput('l', "minecraft:logs")
+			.addInput('c', "minecraft:chests")
+			.addInput('b', BLANK_PATTERN)
+			.addInput('w', Block.workbench)
+			.create("architect_table", ARCHITECT_TABLE_BLOCK.getDefaultStack());
 	}
 
 	@Override
