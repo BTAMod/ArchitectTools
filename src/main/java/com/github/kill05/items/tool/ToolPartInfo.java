@@ -78,8 +78,8 @@ public class ToolPartInfo {
 	}
 
 	public ToolPartInfo renderPriority(int priority) {
-		if(tool != null) throw new IllegalStateException("Tool has already been set!");
 		this.renderPriority = priority;
+		if(tool != null) tool.sortRenderOrder();
 		return this;
 	}
 

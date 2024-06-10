@@ -158,23 +158,28 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 	}
 
 
-	protected void addPart(ToolPartInfo part) {
+	protected void sortRenderOrder() {
+		renderOrder.sort((o1, o2) -> o2.renderPriority() - o1.renderPriority());
+	}
+
+	protected ToolPartInfo addPart(ToolPartInfo part) {
 		if (partList.size() >= ArchitectTools.MAX_TOOL_PARTS)
 			throw new IllegalStateException(String.format("Too many tool parts! (max is %s).", ArchitectTools.MAX_TOOL_PARTS));
 
 		part.setTool(this);
 		partList.add(part);
-
 		renderOrder.add(part);
-		renderOrder.sort((o1, o2) -> o2.renderPriority() - o1.renderPriority());
+		sortRenderOrder();
+
+		return part;
 	}
 
-	protected void addPart(ArchitectPart part, PartType type, String texture) {
-		addPart(new ToolPartInfo(part, type, texture));
+	protected ToolPartInfo addPart(ArchitectPart part, PartType type, String texture) {
+		return addPart(new ToolPartInfo(part, type, texture));
 	}
 
-	protected void addPart(ArchitectPart part, String texture) {
-		addPart(part, part.getValidTypes().get(0), texture);
+	protected ToolPartInfo addPart(ArchitectPart part, String texture) {
+		return addPart(part, part.getValidTypes().get(0), texture);
 	}
 
 	@SafeVarargs
