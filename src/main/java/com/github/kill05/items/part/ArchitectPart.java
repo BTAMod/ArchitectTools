@@ -29,6 +29,9 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 	public static final ArchitectPart TOOL_BINDING = partItem("tool_binding", "part/binding")
 		.validTypes(PartType.EXTRA);
 
+	public static final ArchitectPart SWORD_GUARD = partItem("sword_guard", "part/wide_guard")
+		.validTypes(PartType.EXTRA);
+
 	public static final ArchitectPart PICKAXE_HEAD = partItem("pickaxe_head", "pickaxe/head")
 		.validTypes(PartType.HEAD);
 
@@ -41,9 +44,6 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 	public static final ArchitectPart SWORD_BLADE = partItem("sword_blade")
 		.validTypes(PartType.HEAD);
 
-	public static final ArchitectPart SWORD_GUARD = partItem("sword_guard", "part/wide_guard")
-		.validTypes(PartType.EXTRA);
-
 
 	public static ArchitectPart partItem(String id) {
 		return partItem(id, "part/" + id);
@@ -52,15 +52,15 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 	public static ArchitectPart partItem(String id, String texture) {
 		return new ItemBuilder(ArchitectTools.MOD_ID)
 			.setItemModel(item -> new ArchitectPartModel((ArchitectPart) item, texture))
-			.build(new ArchitectPart(ArchitectTools.ITEM_ID++, id));
+			.build(new ArchitectPart(id));
 	}
 
 	private final String partId;
 	private final int ordinal;
 	private final List<PartType> validTypes;
 
-	public ArchitectPart(int id, String partId) {
-		super(partId + "_part", id);
+	public ArchitectPart(String partId) {
+		super(partId + "_part", ArchitectTools.PART_ID++);
 		this.partId = partId;
 		this.ordinal = VALUES.size();
 		this.validTypes = new ArrayList<>();

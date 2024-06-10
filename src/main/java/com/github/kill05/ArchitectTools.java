@@ -31,6 +31,8 @@ import turniplabs.halplibe.helper.ItemBuilder;
 import turniplabs.halplibe.helper.RecipeBuilder;
 import turniplabs.halplibe.util.ClientStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
+import turniplabs.halplibe.util.TomlConfigHandler;
+import turniplabs.halplibe.util.toml.Toml;
 
 import java.io.IOException;
 import java.net.URI;
@@ -48,12 +50,36 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	public static final String MOD_ID = "architectstools";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+	public static final TomlConfigHandler CONFIG;
 	public static final int MAX_TOOL_PARTS = 3;
-	public static int ITEM_ID = 20000;
-	public static int BLOCK_ID = 1500;
+
+	public static int PART_ID;
+	public static int TOOL_ID;
+	public static int ITEM_ID;
+
+	public static int BLOCK_ID;
 
 	static {
 		new Registries();
+		Toml toml = new Toml();
+
+		// Id
+		toml.addCategory("Set from which ID each category of blocks/items should start registering.", "IDs");
+		toml.addEntry("IDs.Parts", 23000);
+		toml.addEntry("IDs.Tools", 23100);
+		toml.addEntry("IDs.Items", 23200);
+		toml.addEntry("IDs.Blocks", 1500);
+
+		// Gameplay
+		//toml.addCategory("Change how the game and the mod are played.", "Gameplay");
+		//toml.addEntry("Gameplay.DisableOtherTools", "Set to true to disable vanilla tools so players can only use tools from Architect's Tools.", false);
+
+		CONFIG = new TomlConfigHandler(MOD_ID, toml);
+
+		PART_ID = toml.get("IDs.Parts", Integer.class);
+		TOOL_ID = toml.get("IDs.Tools", Integer.class);
+		ITEM_ID = toml.get("IDs.Items", Integer.class);
+		BLOCK_ID = toml.get("IDs.Blocks", Integer.class);
 	}
 
 
@@ -61,7 +87,7 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	public static final Item BLANK_PATTERN = item("blank_pattern", "blank_pattern");
 
 	public static final Block ARCHITECT_TABLE_BLOCK = new BlockBuilder(MOD_ID)
-		.build(new ArchitectTableBlock(BLOCK_ID++));
+		.build(new ArchitectTableBlock());
 
 
 	public static <T extends Item> T item(T item, String texture) {

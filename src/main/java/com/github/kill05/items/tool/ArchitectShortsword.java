@@ -6,8 +6,8 @@ import net.minecraft.core.block.tag.BlockTags;
 
 public class ArchitectShortsword extends ArchitectTool {
 
-	public ArchitectShortsword(int id) {
-		super(id, "shortsword");
+	public ArchitectShortsword() {
+		super("shortsword");
 
 		addPart(ArchitectPart.SWORD_BLADE, "shortsword/blade");
 		addPart(ArchitectPart.SWORD_GUARD, "shortsword/guard");

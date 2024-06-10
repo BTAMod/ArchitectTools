@@ -1,5 +1,6 @@
 package com.github.kill05.blocks.architectstation;
 
+import com.github.kill05.ArchitectTools;
 import com.github.kill05.blocks.architectstation.part.PartModeGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.block.BlockTileEntity;
@@ -10,8 +11,8 @@ import net.minecraft.core.world.World;
 
 public class ArchitectTableBlock extends BlockTileEntity {
 
-	public ArchitectTableBlock(int id) {
-		super("architect_table", id, Material.wood);
+	public ArchitectTableBlock() {
+		super("architect_table", ArchitectTools.BLOCK_ID++, Material.wood);
 	}
 
 	@Override

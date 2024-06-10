@@ -25,11 +25,11 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 
 	public static final List<ArchitectTool> VALUES = new ArrayList<>();
 
-	public static final ArchitectTool PICKAXE = toolItem(new ArchitectPickaxe(ArchitectTools.ITEM_ID++));
-	public static final ArchitectTool AXE = toolItem(new ArchitectAxe(ArchitectTools.ITEM_ID++));
-	public static final ArchitectTool SHOVEL = toolItem(new ArchitectShovel(ArchitectTools.ITEM_ID++));
-	public static final ArchitectTool MATTOCK = toolItem(new ArchitectMattock(ArchitectTools.ITEM_ID++));
-	public static final ArchitectTool SHORTSWORD = toolItem(new ArchitectShortsword(ArchitectTools.ITEM_ID++));
+	public static final ArchitectTool PICKAXE = toolItem(new ArchitectPickaxe());
+	public static final ArchitectTool AXE = toolItem(new ArchitectAxe());
+	public static final ArchitectTool SHOVEL = toolItem(new ArchitectShovel());
+	public static final ArchitectTool MATTOCK = toolItem(new ArchitectMattock());
+	public static final ArchitectTool SHORTSWORD = toolItem(new ArchitectShortsword());
 
 	public static ArchitectTool toolItem(ArchitectTool tool) {
 		return new ItemBuilder(ArchitectTools.MOD_ID)
@@ -44,8 +44,8 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 	private final List<ToolPartInfo> renderOrder;
 	private final Collection<Tag<Block>> mineableTags;
 
-	public ArchitectTool(int id, String toolId) {
-		super(toolId + "_tool", id);
+	public ArchitectTool(String toolId) {
+		super(toolId + "_tool", ArchitectTools.TOOL_ID++);
 		this.validStatistics = new LinkedHashMap<>();
 		this.partList = new ArrayList<>();
 		this.renderOrder = new ArrayList<>();

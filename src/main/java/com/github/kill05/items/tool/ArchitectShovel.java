@@ -6,8 +6,8 @@ import net.minecraft.core.block.tag.BlockTags;
 
 public class ArchitectShovel extends ArchitectTool {
 
-	public ArchitectShovel(int id) {
-		super(id, "shovel");
+	public ArchitectShovel() {
+		super("shovel");
 		addPart(ArchitectPart.SHOVEL_HEAD, "shovel/head");
 		addPart(ArchitectPart.TOOL_ROD, "shovel/handle");
 		addPart(ArchitectPart.TOOL_BINDING, "shovel/binding");

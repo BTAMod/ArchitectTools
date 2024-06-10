@@ -6,8 +6,8 @@ import net.minecraft.core.block.tag.BlockTags;
 
 public class ArchitectMattock extends ArchitectTool {
 
-	public ArchitectMattock(int id) {
-		super(id, "mattock");
+	public ArchitectMattock() {
+		super("mattock");
 
 		addPart(ArchitectPart.AXE_HEAD, "mattock/head");
 		addPart(ArchitectPart.SHOVEL_HEAD, "mattock/back");

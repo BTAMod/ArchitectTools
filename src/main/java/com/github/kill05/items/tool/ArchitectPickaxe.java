@@ -9,8 +9,8 @@ import net.minecraft.core.item.tool.ItemToolPickaxe;
 
 public class ArchitectPickaxe extends ArchitectTool {
 
-	public ArchitectPickaxe(int id) {
-		super(id, "pickaxe");
+	public ArchitectPickaxe() {
+		super("pickaxe");
 		addPart(ArchitectPart.PICKAXE_HEAD, "pickaxe/head");
 		addPart(ArchitectPart.TOOL_BINDING, "pickaxe/binding").renderPriority(-1);
 		addPart(ArchitectPart.TOOL_ROD, "pickaxe/handle");

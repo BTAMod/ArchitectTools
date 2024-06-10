@@ -8,8 +8,8 @@ import net.minecraft.core.item.ItemStack;
 
 public class ArchitectAxe extends ArchitectTool {
 
-	public ArchitectAxe(int id) {
-		super(id, "axe");
+	public ArchitectAxe() {
+		super("axe");
 		addPart(ArchitectPart.AXE_HEAD, "axe/head");
 		addPart(ArchitectPart.TOOL_BINDING, "axe/binding").renderPriority(-1);
 		addPart(ArchitectPart.TOOL_ROD, "pickaxe/handle");
