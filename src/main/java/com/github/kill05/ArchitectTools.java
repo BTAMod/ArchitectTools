@@ -9,9 +9,9 @@ import com.github.kill05.items.part.PartType;
 import com.github.kill05.items.tool.ArchitectTool;
 import com.github.kill05.items.tool.ToolPartInfo;
 import com.github.kill05.materials.ArchitectMaterial;
+import com.github.kill05.utils.ClassUtils;
 import com.github.kill05.utils.ItemUtils;
-import com.mojang.nbt.ListTag;
-import com.mojang.nbt.StringTag;
+import com.mojang.nbt.*;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.stitcher.TextureRegistry;
@@ -220,6 +220,12 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	public void onInitialize() {
 		EntityHelper.createTileEntity(ArchitectTableTileEntity.class, "architect_station");
 
+		// Register items
+		ClassUtils.initializeClasses(
+			ArchitectPart.class,
+			ArchitectTool.class
+		);
+
 		LOGGER.info("Architect's Tools initialized.");
 	}
 
@@ -269,7 +275,6 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 				String path1 = file.toString().replace(file.getFileSystem().getSeparator(), "/");
 				String cutPath = path1.split(path)[1];
 				cutPath = cutPath.substring(0, cutPath.length() - 4);
-				System.out.println(cutPath);
 				TextureRegistry.getTexture(MOD_ID + ":item" + cutPath);
 			}
 		}
