@@ -10,11 +10,11 @@ public class ArchitectShovel extends ArchitectTool {
 	public ArchitectShovel(int id) {
 		super(id, "shovel");
 		addPart(ArchitectPart.SHOVEL_HEAD, PartType.HEAD, "shovel/head");
-		addPart(ArchitectPart.TOOL_ROD, PartType.HEAD, "shovel/handle");
-		addPart(ArchitectPart.TOOL_BINDING, PartType.HEAD, "shovel/binding");
+		addPart(ArchitectPart.TOOL_ROD, PartType.HANDLE, "shovel/handle");
+		addPart(ArchitectPart.TOOL_BINDING, PartType.EXTRA, "shovel/binding");
 
 		addValidStatistic(PartStatistic.MINING_SPEED);
-		addValidStatistic(PartStatistic.ENTITY_DAMAGE);
+		addValidStatistic(PartStatistic.ENTITY_DAMAGE, 0.5f);
 
 		addMineableTags(BlockTags.MINEABLE_BY_SHOVEL);
 	}

@@ -24,6 +24,9 @@ public class ToolPartInfo {
 	private int partIndex;
 
 	public ToolPartInfo(ArchitectPart part, PartType type, String texture) {
+		if(!part.getValidTypes().contains(type))
+			throw new IllegalArgumentException(String.format("Invalid type '%s' for part '%s'.", type, part.id));
+
 		this.part = part;
 		this.type = type;
 		this.texture = texture;

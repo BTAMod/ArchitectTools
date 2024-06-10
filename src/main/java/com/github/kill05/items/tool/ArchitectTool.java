@@ -28,6 +28,8 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 	public static final ArchitectTool PICKAXE = toolItem(new ArchitectPickaxe(ArchitectTools.ITEM_ID++));
 	public static final ArchitectTool AXE = toolItem(new ArchitectAxe(ArchitectTools.ITEM_ID++));
 	public static final ArchitectTool SHOVEL = toolItem(new ArchitectShovel(ArchitectTools.ITEM_ID++));
+	public static final ArchitectTool MATTOCK = toolItem(new ArchitectMattock(ArchitectTools.ITEM_ID++));
+	public static final ArchitectTool SHORTSWORD = toolItem(new ArchitectShortsword(ArchitectTools.ITEM_ID++));
 
 	public static ArchitectTool toolItem(ArchitectTool tool) {
 		return new ItemBuilder(ArchitectTools.MOD_ID)
@@ -169,6 +171,10 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 
 	protected void addPart(ArchitectPart part, PartType type, String texture) {
 		addPart(new ToolPartInfo(part, type, texture));
+	}
+
+	protected void addPart(ArchitectPart part, String texture) {
+		addPart(part, part.getValidTypes().get(0), texture);
 	}
 
 	@SafeVarargs

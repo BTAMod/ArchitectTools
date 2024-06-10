@@ -38,6 +38,12 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 	public static final ArchitectPart SHOVEL_HEAD = partItem("shovel_head", "shovel/head")
 		.validTypes(PartType.HEAD);
 
+	public static final ArchitectPart SWORD_BLADE = partItem("sword_blade")
+		.validTypes(PartType.HEAD);
+
+	public static final ArchitectPart SWORD_GUARD = partItem("sword_guard", "part/wide_guard")
+		.validTypes(PartType.EXTRA);
+
 
 	public static ArchitectPart partItem(String id) {
 		return partItem(id, "part/" + id);

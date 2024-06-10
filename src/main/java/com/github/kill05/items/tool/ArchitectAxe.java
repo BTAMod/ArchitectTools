@@ -16,7 +16,7 @@ public class ArchitectAxe extends ArchitectTool {
 		addPart(ArchitectPart.TOOL_ROD, PartType.HANDLE, "pickaxe/handle");
 
 		addValidStatistic(PartStatistic.MINING_SPEED);
-		addValidStatistic(PartStatistic.ENTITY_DAMAGE);
+		addValidStatistic(PartStatistic.ENTITY_DAMAGE, 0.75f);
 
 		addMineableTags(BlockTags.MINEABLE_BY_AXE);
 	}

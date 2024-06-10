@@ -6,23 +6,30 @@ item.architectstools.tool_binding.name = %s Tool Binding
 item.architectstools.pickaxe_head.name = %s Pickaxe Head
 item.architectstools.axe_head.name = %s Axe Head
 item.architectstools.shovel_head.name = %s Shovel Head
-item.architectstools.hoe_head.name = %s Hoe Head
+item.architectstools.sword_blade.name = %s Sword Blade
+item.architectstools.sword_guard.name = %s Sword Guard
 
 item.architectstools.pickaxe_tool.name = %s Pickaxe
 item.architectstools.axe_tool.name = %s Axe
 item.architectstools.shovel_tool.name = %s Shovel
+item.architectstools.mattock_tool.name = %s Mattock
+item.architectstools.shortsword_tool.name = %s Shortsword
 
 # Item descriptions
 item.architectstools.blank_pattern.desc = A Used in the Architect's Table together with a material to craft tool parts.
 item.architectstools.tool_rod_part.desc = A sturdy shaft used as the handle of tools.
 item.architectstools.tool_binding_part.desc = A robust binding that secures a tool's head with its handle.
 item.architectstools.pickaxe_head_part.desc = A hefty pickaxe head used to craft pickaxes.
-item.architectstools.axe_head.desc = A whetted axe head used to craft axes.
-item.architectstools.shovel_head.desc = A broad shovel head used to craft shovels.
+item.architectstools.axe_head_part.desc = A whetted axe head used to craft axes.
+item.architectstools.shovel_head_part.desc = A broad shovel head used to craft shovels.
+item.architectstools.sword_blade_part.desc = A sharp blade used to craft swords.
+item.architectstools.sword_guard_part.desc = A strong guard used to craft swords.
 
 item.architectstools.pickaxe_tool.desc = A skillfully crafted pickaxe.
 item.architectstools.axe_tool.desc = A skillfully crafted axe.
 item.architectstools.shovel_tool.desc = A skillfully crafted shovel.
+item.architectstools.mattock_tool.desc = A skillfully crafted mattock.
+item.architectstools.shortsword_tool.desc = A skillfully crafted shortsword.
 
 
 # Blocks
