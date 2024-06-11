@@ -4,8 +4,8 @@ import com.github.kill05.ArchitectTools;
 import com.github.kill05.MiningLevel;
 import com.github.kill05.items.part.ArchitectPart;
 import com.github.kill05.items.part.PartType;
-import com.github.kill05.items.part.statistics.PartStatistics;
 import com.github.kill05.items.part.statistics.PartStatistic;
+import com.github.kill05.items.part.statistics.PartStatistics;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.data.registry.Registries;
 import net.minecraft.core.data.registry.Registry;
@@ -16,8 +16,8 @@ import net.minecraft.core.lang.I18n;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class ArchitectMaterial {
 
@@ -102,13 +102,6 @@ public class ArchitectMaterial {
 	}
 
 
-	public @NotNull ItemStack createPart(ArchitectPart part) {
-		ItemStack item = new ItemStack(part);
-		ArchitectTools.setPartMaterial(item, this);
-		return item;
-	}
-
-
 	public ArchitectMaterial addItems(IItemConvertible... items) {
 		for (IItemConvertible item : items) {
 			this.items.add(item.asItem().getDefaultStack());
@@ -174,6 +167,14 @@ public class ArchitectMaterial {
 
 	public PartStatistics getExtraStatistics() {
 		return getStatistics(PartType.EXTRA);
+	}
+
+	public boolean isValidPart(ArchitectPart part) {
+		for (PartType type : part.getValidTypes()) {
+			if(getStatistics(type) != null) return true;
+		}
+
+		return false;
 	}
 
 

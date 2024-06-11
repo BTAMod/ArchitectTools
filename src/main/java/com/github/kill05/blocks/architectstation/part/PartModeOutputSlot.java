@@ -2,9 +2,9 @@ package com.github.kill05.blocks.architectstation.part;
 
 import com.github.kill05.ArchitectTools;
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
+import com.github.kill05.exceptions.ArchitectItemException;
+import com.github.kill05.exceptions.InvalidMaterialException;
 import com.github.kill05.inventory.OutputInventory;
-import com.github.kill05.items.part.ArchitectPart;
-import com.github.kill05.materials.ArchitectMaterial;
 import com.github.kill05.utils.ItemUtils;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.IInventory;
@@ -52,15 +52,15 @@ public class PartModeOutputSlot extends Slot {
 
 		@Override
 		public @Nullable ItemStack getOutput() {
-			ArchitectPart part = tile.getSelectedPart();
-			ItemStack materialItem = tile.getPartInventory().getStackInSlot(1);
-			ArchitectMaterial material = materialItem != null ? ArchitectTools.getMaterial(materialItem) : null;
+			if(tile.getSelectedPart() == null) return null;
+			if(!ItemUtils.compare(tile.getPartInventory().getStackInSlot(0), ArchitectTools.BLANK_PATTERN)) return null;
 
-			boolean hasOutput =
-				ItemUtils.compare(tile.getPartInventory().getStackInSlot(0), ArchitectTools.BLANK_PATTERN) &&
-					part != null && material != null;
-
-			return hasOutput ? material.createPart(part) : null;
+			try {
+				ItemStack materialItem = tile.getPartInventory().getStackInSlot(1);
+				return ArchitectTools.createPartStack(materialItem, tile.getSelectedPart());
+			} catch (InvalidMaterialException | ArchitectItemException e) {
+				return null;
+			}
 		}
 	}
 }

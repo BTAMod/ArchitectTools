@@ -95,20 +95,25 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 
 	// Tool Parts
-	public static @NotNull ItemStack createPartStack(@NotNull ArchitectMaterial material, ArchitectPart type) {
-		return material.createPart(type);
+	public static @NotNull ItemStack createPartStack(@NotNull ArchitectMaterial material, ArchitectPart part) throws ArchitectItemException {
+		if(!material.isValidPart(part))
+			throw new ArchitectItemException(String.format("Part '%s' can't be made out of material '%s'", part.getPartId(), material.id()));
+
+		ItemStack item = new ItemStack(part);
+		setPartMaterial(item, material);
+		return item;
 	}
 
-	public static @NotNull ItemStack createPartStack(@NotNull String material, @NotNull ArchitectPart part) throws InvalidMaterialException {
-		ArchitectMaterial architectMaterial = getMaterial(material);
-		if (architectMaterial == null) throw new InvalidMaterialException("Invalid material: " + material);
-		return architectMaterial.createPart(part);
+	public static @NotNull ItemStack createPartStack(@NotNull String materialName, @NotNull ArchitectPart part) throws InvalidMaterialException, ArchitectItemException {
+		ArchitectMaterial material = getMaterial(materialName);
+		if (material == null) throw new InvalidMaterialException("Invalid material: " + materialName);
+		return createPartStack(material, part);
 	}
 
-	public static @NotNull ItemStack createPartStack(@NotNull ItemStack material, @NotNull ArchitectPart part) throws InvalidMaterialException {
-		ArchitectMaterial architectMaterial = getMaterial(material);
-		if (architectMaterial == null) throw new InvalidMaterialException("Invalid material: " + material);
-		return architectMaterial.createPart(part);
+	public static @NotNull ItemStack createPartStack(@NotNull ItemStack materialItem, @NotNull ArchitectPart part) throws InvalidMaterialException, ArchitectItemException {
+		ArchitectMaterial material = getMaterial(materialItem);
+		if (material == null) throw new InvalidMaterialException("Invalid material: " + materialItem);
+		return createPartStack(material, part);
 	}
 
 	public static @Nullable ArchitectMaterial getPartMaterial(@NotNull ItemStack item) {
@@ -269,7 +274,7 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 		}
 		Iterator<Path> it = walk.iterator();
 
-		while(it.hasNext()) {
+		while (it.hasNext()) {
 			Path file = it.next();
 			String name = file.getFileName().toString();
 			if (name.endsWith(".png")) {
