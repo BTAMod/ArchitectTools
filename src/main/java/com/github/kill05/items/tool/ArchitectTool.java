@@ -152,9 +152,9 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 
 	public <V extends Number> V getStatistic(ItemStack item, PartStatistic<V> statistic) {
 		Float mult = validStatistics.get(statistic);
-		if(mult == null) return statistic.getNoneValue();
+		if(mult == null) return statistic.getMinValue();
 
-		V value = statistic.getNoneValue();
+		V value = statistic.getMinValue();
 		for (ToolPartInfo info : getPartList()) {
 			ArchitectMaterial part = ArchitectTools.getToolPart(item, info);
 			if(part == null) continue;
@@ -165,7 +165,7 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 			value = statistic.sumValue(value, statistics.getStatistic(statistic));
 		}
 
-		return statistic.multiplyValue(value, mult);
+		return statistic.max(statistic.multiplyValue(value, mult), statistic.getMinValue());
 	}
 
 

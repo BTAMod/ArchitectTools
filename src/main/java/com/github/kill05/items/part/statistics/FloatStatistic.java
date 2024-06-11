@@ -11,8 +11,12 @@ public class FloatStatistic extends PartStatistic<Float> {
 
 	public static final DecimalFormat FORMAT = new DecimalFormat("#.##", DecimalFormatSymbols.getInstance(Locale.ENGLISH));
 
+	public FloatStatistic(String id, String color, float minValue) {
+		super(id, color, Float.class, minValue);
+	}
+
 	public FloatStatistic(String id, String color) {
-		super(id, color, Float.class, 0f);
+		this(id, color, 0f);
 	}
 
 	@Override
@@ -23,6 +27,11 @@ public class FloatStatistic extends PartStatistic<Float> {
 	@Override
 	public @NotNull Float multiplyValue(@NotNull Float value, float mult) {
 		return value * mult;
+	}
+
+	@Override
+	public @NotNull Float max(Float value1, Float value2) {
+		return Math.max(value1, value2);
 	}
 
 	@Override

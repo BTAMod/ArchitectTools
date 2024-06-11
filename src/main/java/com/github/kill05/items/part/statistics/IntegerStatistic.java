@@ -5,8 +5,12 @@ import org.jetbrains.annotations.NotNull;
 
 public class IntegerStatistic extends PartStatistic<Integer> {
 
+	public IntegerStatistic(String id, String color, int minValue) {
+		super(id, color, Integer.class, minValue);
+	}
+
 	public IntegerStatistic(String id, String color) {
-		super(id, color, Integer.class, 0);
+		this(id, color, 0);
 	}
 
 	@Override
@@ -17,6 +21,11 @@ public class IntegerStatistic extends PartStatistic<Integer> {
 	@Override
 	public @NotNull Integer multiplyValue(@NotNull Integer input, float mult) {
 		return (int) (input * mult);
+	}
+
+	@Override
+	public @NotNull Integer max(Integer value1, Integer value2) {
+		return Math.max(value1, value2);
 	}
 
 	@Override

@@ -5,7 +5,7 @@ import net.minecraft.core.item.ItemStack;
 public class DurabilityStatistic extends IntegerStatistic {
 
 	public DurabilityStatistic(String id) {
-		super(id, "§5");
+		super(id, "§5", 10);
 	}
 
 	@Override

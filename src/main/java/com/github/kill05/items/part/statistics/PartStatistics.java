@@ -27,7 +27,7 @@ public class PartStatistics implements Iterable<Map.Entry<PartStatistic<?>, Obje
 	@SuppressWarnings("unchecked")
 	public <V extends Number> @NotNull V getStatistic(@NotNull PartStatistic<V> statistic) {
 		Object o = statisticMap.get(statistic);
-		return o != null ? (V) o : statistic.getNoneValue();
+		return o != null ? (V) o : statistic.getMinValue();
 	}
 
 	public boolean hasStatistic(PartStatistic<?> statistic) {

@@ -21,20 +21,22 @@ public abstract class PartStatistic<V extends Number> {
 	private final String id;
 	private final String color;
 	private final Class<V> valueClass;
-	private final V noneValue;
+	private final V minValue;
 
-	public PartStatistic(String id, String color, Class<V> valueClass, V noneValue) {
+	public PartStatistic(String id, String color, Class<V> valueClass, V minValue) {
 		if(VALUES.contains(this)) throw new IllegalStateException("Duplicate id: " + id);
 		this.id = id;
 		this.color = color;
 		this.valueClass = valueClass;
-		this.noneValue = noneValue;
+		this.minValue = minValue;
 		VALUES.add(this);
 	}
 
 	public abstract @NotNull V sumValue(@NotNull V value1, @NotNull V value2);
 
 	public abstract @NotNull V multiplyValue(@NotNull V value, float mult);
+
+	public abstract @NotNull V max(V value1, V value2);
 
 	public abstract String formatToolValue(ItemStack itemStack, V value);
 
@@ -69,8 +71,8 @@ public abstract class PartStatistic<V extends Number> {
 		return valueClass;
 	}
 
-	public V getNoneValue() {
-		return noneValue;
+	public V getMinValue() {
+		return minValue;
 	}
 
 
