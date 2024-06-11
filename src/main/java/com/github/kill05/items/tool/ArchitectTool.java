@@ -64,19 +64,22 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 	//todo: remove once 7.2-pre2 comes out (need itemstack argument)
 	@Override
 	public boolean canHarvestBlock(Block block) {
-		throw new UnsupportedOperationException("Use canHarvestBlock(ItemStack, Block) instead.");
+		ArchitectTools.LOGGER.warn("canHarvestBlock(Block) was called on an ArchitectTool. canHarvestBlock(ItemStack, Block) should be used instead.");
+		return super.canHarvestBlock(block);
 	}
 
 	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
 	@Override
 	public int getDamageVsEntity(Entity entity) {
-		throw new UnsupportedOperationException("use getDamageVsEntity(Entity, ItemStack) instead.");
+		ArchitectTools.LOGGER.warn("getDamageVsEntity(Entity) was called on an ArchitectTool. getDamageVsEntity(Entity, Itemstack) should be used instead.");
+		return super.getDamageVsEntity(entity);
 	}
 
 	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
 	@Override
 	public int getMaxDamage() {
-		throw new UnsupportedOperationException("Use getMaxDamage(ItemStack) instead.");
+		ArchitectTools.LOGGER.warn("getMaxDamage() was called on an ArchitectTool. getMaxDamage(ItemStack) should be used instead.");
+		return super.getMaxDamage();
 	}
 
 	@Override
