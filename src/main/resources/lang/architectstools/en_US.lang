@@ -16,7 +16,7 @@ item.architectstools.mattock_tool.name = %s Mattock
 item.architectstools.shortsword_tool.name = %s Shortsword
 
 # Item descriptions
-item.architectstools.blank_pattern.desc = A Used in the Architect's Table together with a material to craft tool parts.
+item.architectstools.blank_pattern.desc = Used in the Architect's Table together with a material to craft tool parts.
 item.architectstools.tool_rod_part.desc = A sturdy shaft used as the handle of tools.
 item.architectstools.tool_binding_part.desc = A robust binding that secures a tool's head with its handle.
 item.architectstools.pickaxe_head_part.desc = A hefty pickaxe head used to craft pickaxes.
