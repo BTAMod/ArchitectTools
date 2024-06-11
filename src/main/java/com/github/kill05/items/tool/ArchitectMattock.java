@@ -18,6 +18,7 @@ public class ArchitectMattock extends ArchitectTool {
 		addPart(ArchitectPart.SHOVEL_HEAD, "mattock/back");
 		addPart(ArchitectPart.TOOL_ROD, "mattock/handle").renderPriority(1);
 
+		addValidStatistic(PartStatistic.DURABILITY, 0.5f);
 		addValidStatistic(PartStatistic.MINING_SPEED, 0.4f);
 		addValidStatistic(PartStatistic.ENTITY_DAMAGE, 0.25f);
 

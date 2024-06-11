@@ -147,9 +147,6 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 	}
 
 	protected void addValidStatistic(PartStatistic<?> type, float multiplier) {
-		if (validStatistics.containsKey(type))
-			throw new IllegalStateException(String.format("State '%s' has already been added!", type.getId()));
-
 		validStatistics.put(type, multiplier);
 	}
 
