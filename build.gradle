@@ -86,7 +86,7 @@ dependencies {
 	modImplementation "ModMenu:ModMenu:${project.mod_menu_version}"
 
 	implementation files("libraries/catalyst-core-1.4.3.jar")
-	implementation files("libraries/catalyst-fluids-1.1.5.jar")
+	//implementation files("libraries/catalyst-fluids-1.1.6.jar")
 
 	implementation files("libraries/btwaila-1.1.0-7.2-pre1.jar");
 
