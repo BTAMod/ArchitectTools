@@ -85,8 +85,8 @@ dependencies {
 	modImplementation "com.github.Turnip-Labs:bta-halplibe:${project.halplibe_version}"
 	modImplementation "ModMenu:ModMenu:${project.mod_menu_version}"
 
-	implementation files("libraries/catalyst-core-1.2.1.jar")
-	implementation files("libraries/catalyst-fluids-1.1.1.jar")
+	implementation files("libraries/catalyst-core-1.4.2.jar")
+	implementation files("libraries/catalyst-fluids-1.1.5.jar")
 
 	implementation files("libraries/btwaila-1.1.0-7.2-pre1.jar");
 
