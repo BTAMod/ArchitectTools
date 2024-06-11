@@ -1,6 +1,7 @@
 package com.github.kill05.utils;
 
 import com.github.kill05.ArchitectTools;
+import com.github.kill05.config.ArchitectConfig;
 import com.github.kill05.items.ArchitectItem;
 import com.github.kill05.items.part.PartType;
 import com.github.kill05.items.tool.ArchitectTool;
@@ -36,5 +37,18 @@ public final class ItemUtils {
 		return NBTUtils.getOrCreateList(getToolComponents(item), part.getId());
 	}
 
+
+	public static String getDisabledName(String originalName) {
+		return ArchitectConfig.getDisableVanillaTools() ? originalName + " §e(DISABLED)§r" : originalName;
+	}
+
+	public static String getDisabledDescription() {
+		if(!ArchitectConfig.getDisableVanillaTools()) return "";
+		return """
+			§eVanilla tools are disabled by Architect's Tools.
+			§eIf you wish to enable vanilla tools,
+			§eplease open 'architectstools.cfg',
+			§ethen set 'DisableVanillaTools' to 'false'.""";
+	}
 
 }

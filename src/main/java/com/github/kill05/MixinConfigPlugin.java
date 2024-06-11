@@ -1,6 +1,5 @@
 package com.github.kill05;
 
-import com.github.kill05.config.ArchitectConfig;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -22,10 +21,6 @@ public class MixinConfigPlugin implements IMixinConfigPlugin {
 
 	@Override
 	public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-		if (mixinClassName.equals("com.github.kill05.mixins.disablevanilla.ItemToolMixin")) {
-			return ArchitectConfig.getDisableVanillaTools();
-		}
-
 		return true;
 	}
 

@@ -7,7 +7,9 @@
   "mixins": [
     "ItemStackMixin",
     "StringTagMixin",
-    "disablevanilla.ItemToolMixin"
+    "disablevanilla.ItemToolSwordMixin",
+    "disablevanilla.ItemToolMixin",
+    "disablevanilla.ItemToolPickaxeMixin"
   ],
   "client": [
   ],
