@@ -18,9 +18,11 @@ import net.fabricmc.api.ModInitializer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.render.stitcher.TextureRegistry;
 import net.minecraft.core.block.Block;
+import net.minecraft.core.block.tag.BlockTags;
 import net.minecraft.core.data.DataLoader;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.sound.BlockSounds;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -56,6 +58,11 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	public static final Item BLANK_PATTERN = item("blank_pattern", "blank_pattern");
 
 	public static final Block ARCHITECT_TABLE_BLOCK = new BlockBuilder(MOD_ID)
+		.setHardness(2.5F)
+		.setResistance(5.0F)
+		.setFlammability(10, 10)
+		.setBlockSound(BlockSounds.WOOD)
+		.setTags(BlockTags.MINEABLE_BY_AXE)
 		.build(new ArchitectTableBlock());
 
 
