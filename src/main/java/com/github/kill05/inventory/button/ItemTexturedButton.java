@@ -20,17 +20,11 @@ public class ItemTexturedButton extends GuiButton {
 	public void drawButton(Minecraft mc, int mouseX, int mouseY) {
 		if (!this.visible) return;
 
-		GL11.glBindTexture(3553, mc.renderEngine.getTexture("/gui/items.png"));
-		GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-
-		render(mc, item, xPosition, yPosition, 1.0f, 1.0f);
-		this.mouseDragged(mc, mouseX, mouseY);
-	}
-
-	public void render(Minecraft mc, ItemStack item, int x, int y, float brightness, float alpha) {
 		ItemModelDispatcher.getInstance().getDispatch(item).renderItemIntoGui(
 			Tessellator.instance, mc.fontRenderer, mc.renderEngine,
-			item, x, y, brightness, alpha
+			item, xPosition, yPosition, 1.0f, 1.0f
 		);
+
+		GL11.glDisable(GL11.GL_LIGHTING);
 	}
 }
