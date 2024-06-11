@@ -2,6 +2,7 @@ package com.github.kill05.blocks.architectstation;
 
 import com.github.kill05.blocks.architectstation.part.PartModeGui;
 import com.github.kill05.config.ArchitectConfig;
+import com.github.kill05.utils.InventoryUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.block.BlockTileEntity;
 import net.minecraft.core.block.entity.TileEntity;
@@ -29,4 +30,12 @@ public class ArchitectTableBlock extends BlockTileEntity {
 		return true;
 	}
 
+
+	@Override
+	public void onBlockRemoved(World world, int x, int y, int z, int data) {
+		ArchitectTableTileEntity tile = ((ArchitectTableTileEntity) world.getBlockTileEntity(x, y, z));
+		InventoryUtils.dropInventoryContents(tile.getPartInventory(), world, x, y, z);
+		InventoryUtils.dropInventoryContents(tile.getToolInventory(), world, x, y, z);
+		super.onBlockRemoved(world, x, y, z, data);
+	}
 }

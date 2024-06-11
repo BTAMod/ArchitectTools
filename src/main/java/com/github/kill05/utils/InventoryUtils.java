@@ -3,8 +3,10 @@ package com.github.kill05.utils;
 import com.mojang.nbt.CompoundTag;
 import com.mojang.nbt.ListTag;
 import com.mojang.nbt.Tag;
+import net.minecraft.core.entity.EntityItem;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.IInventory;
+import net.minecraft.core.world.World;
 
 public final class InventoryUtils {
 
@@ -37,6 +39,21 @@ public final class InventoryUtils {
 		}
 
 		return inv;
+	}
+
+
+	public static void dropInventoryContents(IInventory inventory, World world, int x, int y, int z) {
+		for(int i = 0; i < inventory.getSizeInventory(); ++i) {
+			ItemStack itemStack = inventory.getStackInSlot(i);
+			if (itemStack != null) {
+				EntityItem item = world.dropItem(x, y, z, itemStack);
+				item.xd *= 0.5;
+				item.yd *= 0.5;
+				item.zd *= 0.5;
+				item.delayBeforeCanPickup = 0;
+			}
+		}
+
 	}
 
 }
