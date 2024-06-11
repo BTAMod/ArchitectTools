@@ -7,11 +7,9 @@ import com.github.kill05.items.model.ArchitectPartModel;
 import com.github.kill05.items.part.statistics.PartStatistic;
 import com.github.kill05.items.part.statistics.PartStatistics;
 import com.github.kill05.materials.ArchitectMaterial;
-import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.lang.I18n;
-import net.minecraft.core.world.World;
 import sunsetsatellite.catalyst.core.util.ICustomDescription;
 import turniplabs.halplibe.helper.ItemBuilder;
 
@@ -110,12 +108,6 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 		}
 
 		return builder.toString();
-	}
-
-	@Override
-	public ItemStack onItemRightClick(ItemStack item, World world, EntityPlayer player) {
-		player.sendMessage(String.valueOf(item));
-		return item;
 	}
 
 	@Override
