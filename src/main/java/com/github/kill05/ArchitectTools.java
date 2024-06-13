@@ -20,6 +20,11 @@ import net.minecraft.client.render.stitcher.TextureRegistry;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.tag.BlockTags;
 import net.minecraft.core.data.DataLoader;
+import net.minecraft.core.data.registry.Registries;
+import net.minecraft.core.data.registry.recipe.RecipeGroup;
+import net.minecraft.core.data.registry.recipe.RecipeNamespace;
+import net.minecraft.core.data.registry.recipe.RecipeSymbol;
+import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.sound.BlockSounds;
@@ -52,6 +57,10 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	public static final String MOD_ID = "architectstools";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final int MAX_TOOL_PARTS = 3;
+
+	public static final RecipeNamespace RECIPE_NAMESPACE = new RecipeNamespace();
+	public static final RecipeGroup<RecipeEntryCrafting<?, ?>> RECIPE_WORKBENCH = new RecipeGroup<>(new RecipeSymbol(new ItemStack(Block.workbench)));
+
 
 
 	// Items and Blocks
@@ -323,8 +332,8 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	@Override
 	public void initNamespaces() {
-
+		Registries.RECIPES.register(MOD_ID, RECIPE_NAMESPACE);
+		RECIPE_NAMESPACE.register("workbench", RECIPE_WORKBENCH);
 	}
-
 
 }
