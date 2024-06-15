@@ -1,9 +1,8 @@
 package com.github.kill05.blocks.architectstation;
 
-import com.github.kill05.blocks.architectstation.part.PartModeGui;
+import com.github.kill05.ArchitectGuis;
 import com.github.kill05.config.ArchitectConfig;
 import com.github.kill05.utils.InventoryUtils;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.block.BlockTileEntity;
 import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.block.material.Material;
@@ -24,9 +23,7 @@ public class ArchitectTableBlock extends BlockTileEntity {
 	@Override
 	public boolean blockActivated(World world, int x, int y, int z, EntityPlayer player) {
 		if(player.isSneaking()) return false;
-
-		ArchitectTableTileEntity tile = (ArchitectTableTileEntity) world.getBlockTileEntity(x, y, z);
-		Minecraft.getMinecraft(Minecraft.class).displayGuiScreen(new PartModeGui(tile, player));
+		ArchitectGuis.PART_MODE.open(player, x, y, z);
 		return true;
 	}
 

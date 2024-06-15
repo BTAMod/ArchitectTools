@@ -10,6 +10,7 @@ import com.github.kill05.items.tool.ArchitectTool;
 import com.github.kill05.items.tool.ToolPartInfo;
 import com.github.kill05.utils.RenderUtils;
 import net.minecraft.core.entity.player.EntityPlayer;
+import org.lwjgl.opengl.GL11;
 
 public class ToolModeGui extends TileContainerGui {
 
@@ -44,6 +45,8 @@ public class ToolModeGui extends TileContainerGui {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f) {
 		RenderUtils.bindTexture("gui/tool_mode.png");
+		GL11.glColor4f(1f, 1f, 1f, 1f);
+
 		int x = (this.width - this.xSize) / 2;
 		int y = (this.height - this.ySize) / 2;
 		drawTexturedModalRect(x, y, 0, 0, xSize, ySize);

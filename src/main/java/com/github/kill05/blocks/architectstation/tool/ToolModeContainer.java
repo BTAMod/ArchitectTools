@@ -13,7 +13,7 @@ import java.util.List;
 
 public class ToolModeContainer extends TileContainer {
 
-	protected ToolModeContainer(ArchitectTableTileEntity tile, EntityPlayer player) {
+	public ToolModeContainer(ArchitectTableTileEntity tile, EntityPlayer player) {
 		super(tile, tile.getToolInventory());
 
 		for(int i = 0; i < tile.getToolInventory().getSizeInventory(); i++) {
