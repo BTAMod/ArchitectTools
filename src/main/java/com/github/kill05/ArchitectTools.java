@@ -10,6 +10,7 @@ import com.github.kill05.items.part.PartType;
 import com.github.kill05.items.tool.ArchitectTool;
 import com.github.kill05.items.tool.ToolPartInfo;
 import com.github.kill05.materials.ArchitectMaterial;
+import com.github.kill05.materials.MaterialInfo;
 import com.github.kill05.utils.ClassUtils;
 import com.github.kill05.utils.ItemUtils;
 import com.mojang.nbt.ListTag;
@@ -62,7 +63,6 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	public static final RecipeGroup<RecipeEntryCrafting<?, ?>> RECIPE_WORKBENCH = new RecipeGroup<>(new RecipeSymbol(new ItemStack(Block.workbench)));
 
 
-
 	// Items and Blocks
 	public static final Item BLANK_PATTERN = item("blank_pattern", "blank_pattern");
 
@@ -93,19 +93,20 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 		return ArchitectMaterial.MATERIAL_REGISTRY.getItem(id);
 	}
 
-	public static @Nullable ArchitectMaterial getMaterial(@Nullable ItemStack item) {
-		if (item == null) return null;
+	public static @NotNull MaterialInfo getMaterialInfo(@Nullable ItemStack item) {
+		if (item == null) return new MaterialInfo(null, 0);
 		for (ArchitectMaterial material : ArchitectMaterial.MATERIAL_REGISTRY) {
-			if (material.isThisMaterial(item)) return material;
+			Integer value = material.getMaterialValue(item);
+			if (value != null) return new MaterialInfo(material, value);
 		}
 
-		return null;
+		return new MaterialInfo(null, 0);
 	}
 
 
 	// Tool Parts
 	public static @NotNull ItemStack createPartStack(@NotNull ArchitectMaterial material, ArchitectPart part) throws ArchitectItemException {
-		if(!material.isValidPart(part))
+		if (!material.isValidPart(part))
 			throw new ArchitectItemException(String.format("Part '%s' can't be made out of material '%s'", part.getPartId(), material.id()));
 
 		ItemStack item = new ItemStack(part);
@@ -120,9 +121,10 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	}
 
 	public static @NotNull ItemStack createPartStack(@NotNull ItemStack materialItem, @NotNull ArchitectPart part) throws InvalidMaterialException, ArchitectItemException {
-		ArchitectMaterial material = getMaterial(materialItem);
-		if (material == null) throw new InvalidMaterialException("Invalid material: " + materialItem);
-		return createPartStack(material, part);
+		MaterialInfo info = getMaterialInfo(materialItem);
+		if (info.material() == null) throw new InvalidMaterialException("Invalid material: " + materialItem);
+		if (info.value() * materialItem.stackSize < part.getMaterialCost()) throw new InvalidMaterialException("Not enough material.");
+		return createPartStack(info.material(), part);
 	}
 
 	public static @Nullable ArchitectMaterial getPartMaterial(@NotNull ItemStack item) {
@@ -316,6 +318,11 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	@Override
 	public void onRecipesReady() {
+		ArchitectMaterial.lock();
+		for (ArchitectMaterial material : ArchitectMaterial.MATERIAL_REGISTRY) {
+			material.initGroups();
+		}
+
 		RecipeBuilder.Shaped(MOD_ID, "xo", "ox")
 			.addInput('x', Item.stick)
 			.addInput('o', "minecraft:planks")

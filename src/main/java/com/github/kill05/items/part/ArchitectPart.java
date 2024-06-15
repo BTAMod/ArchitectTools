@@ -22,45 +22,43 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 
 	public static final List<ArchitectPart> VALUES = new ArrayList<>();
 
-	public static final ArchitectPart TOOL_ROD = partItem("tool_rod")
+	public static final ArchitectPart TOOL_ROD = partItem("tool_rod", "part/tool_rod", 1)
 		.validTypes(PartType.HANDLE, PartType.EXTRA);
 
-	public static final ArchitectPart TOOL_BINDING = partItem("tool_binding", "part/binding")
+	public static final ArchitectPart TOOL_BINDING = partItem("tool_binding", "part/binding", 1)
 		.validTypes(PartType.EXTRA);
 
-	public static final ArchitectPart SWORD_GUARD = partItem("sword_guard", "part/wide_guard")
+	public static final ArchitectPart SWORD_GUARD = partItem("sword_guard", "part/wide_guard", 1)
 		.validTypes(PartType.EXTRA);
 
-	public static final ArchitectPart PICKAXE_HEAD = partItem("pickaxe_head", "pickaxe/head")
+	public static final ArchitectPart PICKAXE_HEAD = partItem("pickaxe_head", "pickaxe/head", 3)
 		.validTypes(PartType.HEAD);
 
-	public static final ArchitectPart AXE_HEAD = partItem("axe_head", "axe/head")
+	public static final ArchitectPart AXE_HEAD = partItem("axe_head", "axe/head", 2)
 		.validTypes(PartType.HEAD);
 
-	public static final ArchitectPart SHOVEL_HEAD = partItem("shovel_head", "shovel/head")
+	public static final ArchitectPart SHOVEL_HEAD = partItem("shovel_head", "shovel/head", 2)
 		.validTypes(PartType.HEAD);
 
-	public static final ArchitectPart SWORD_BLADE = partItem("sword_blade")
+	public static final ArchitectPart SWORD_BLADE = partItem("sword_blade", "part/sword_blade", 2)
 		.validTypes(PartType.HEAD);
 
 
-	public static ArchitectPart partItem(String id) {
-		return partItem(id, "part/" + id);
-	}
-
-	public static ArchitectPart partItem(String id, String texture) {
+	public static ArchitectPart partItem(String id, String texture, float materialCost) {
 		return new ItemBuilder(ArchitectTools.MOD_ID)
 			.setItemModel(item -> new ArchitectPartModel((ArchitectPart) item, texture))
-			.build(new ArchitectPart(id));
+			.build(new ArchitectPart(id, ArchitectMaterial.getActualMaterialValue(materialCost)));
 	}
 
 	private final String partId;
 	private final int ordinal;
+	private final int materialCost;
 	private final List<PartType> validTypes;
 
-	public ArchitectPart(String partId) {
+	public ArchitectPart(String partId, int materialCost) {
 		super(partId + "_part", ArchitectConfig.PART_ID++);
 		this.partId = partId;
+		this.materialCost = materialCost;
 		this.ordinal = VALUES.size();
 		this.validTypes = new ArrayList<>();
 
@@ -133,4 +131,7 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 		return ordinal;
 	}
 
+	public int getMaterialCost() {
+		return materialCost;
+	}
 }

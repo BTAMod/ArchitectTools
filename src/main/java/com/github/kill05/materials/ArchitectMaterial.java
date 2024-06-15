@@ -13,85 +13,110 @@ import net.minecraft.core.item.IItemConvertible;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.lang.I18n;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
 
 public class ArchitectMaterial {
 
+	// Used to avoid floating point error.
+	// Each value is a prime number raised to the 4th power
+	public static final int MATERIAL_UNIT_VALUE = 16 * 81 * 625;
 	public static final Registry<ArchitectMaterial> MATERIAL_REGISTRY = new Registry<>();
+
+	@ApiStatus.Internal
+	private static boolean locked;
 
 	public static final ArchitectMaterial WOOD = new ArchitectMaterial("wood", "#876627")
 		.headStats(64, MiningLevel.STONE, 2.0f, 5f)
 		.handleStats(15)
 		.extraStats(-10)
-		.addItemGroup("minecraft:planks");
+		.addGroupValue(1, "minecraft:planks")
+		.addItemValue(0.5f, Item.stick);
 
 	public static final ArchitectMaterial STONE = new ArchitectMaterial("stone", "#B1AFAD")
 		.headStats(30, MiningLevel.STONE, 2.5f, 4f)
 		.handleStats(-20)
 		.extraStats(-20)
-		.addItemGroup("minecraft:cobblestones");
+		.addGroupValue(1, "minecraft:cobblestones");
 
 	public static final ArchitectMaterial FLINT = new ArchitectMaterial("flint", "#828282", MaterialType.CONTRAST)
-		.headStats(120, MiningLevel.IRON, 4.0f, 6f)
+		.headStats(120, MiningLevel.IRON, 4.0f, 5.5f)
 		.handleStats(-30)
 		.extraStats(30)
-		.addItems(Item.flint);
+		.addItemValue(1, Item.flint);
 
 	public static final ArchitectMaterial BONE = new ArchitectMaterial("bone", "#E8E5D2", MaterialType.BONE)
-		.addItems(Item.bone);
+		.headStats(150, MiningLevel.STONE, 2.0f, 6.5f)
+		.handleStats(10)
+		.extraStats(-25)
+		.addItemValue(1, Item.bone)
+		.addItemValue(1/3f, new ItemStack(Item.dye, 1, 15));
 
 	public static final ArchitectMaterial CACTUS = new ArchitectMaterial("cactus", "#ffffff", MaterialType.CACTUS)
 		.headStats(80, MiningLevel.STONE, 3.0f, 6f)
 		.handleStats(-10)
 		.extraStats(-10)
-		.addItems(Block.cactus);
+		.addItemValue(1, Block.cactus);
 
 	public static final ArchitectMaterial PAPER = new ArchitectMaterial("paper", "#ffffff", MaterialType.PAPER)
-		.headStats(20, MiningLevel.STONE, 1.5f, 2.5f)
+		.headStats(20, MiningLevel.STONE, 1.5f, 3.5f)
 		.handleStats(-10)
 		.extraStats(-10)
-		.addItems(Item.paper);
+		.addItemValue(1, Item.paper);
 
 
 	public static final ArchitectMaterial OBSIDIAN = new ArchitectMaterial("obsidian", "#3B2754")
 		.headStats(650, MiningLevel.OBSIDIAN, 4.5f, 6.5f)
 		.handleStats(-50)
 		.extraStats(50)
-		.addItems(Block.obsidian);
+		.addItemValue(1, Block.obsidian);
 
 	public static final ArchitectMaterial IRON = new ArchitectMaterial("iron", "#D8D8D8")
 		.headStats(300, MiningLevel.DIAMOND, 6.0f, 7f)
 		.handleStats(40)
 		.extraStats(40)
-		.addItems(Item.ingotIron);
+		.addItemValue(1, Item.ingotIron);
 
 	public static final ArchitectMaterial GOLD = new ArchitectMaterial("gold", "#FDF55F")
 		.handleStats(-50)
 		.extraStats(75)
-		.addItems(Item.ingotGold);
+		.addItemValue(1, Item.ingotGold);
 
 	public static final ArchitectMaterial STEEL = new ArchitectMaterial("steel", "#505050")
 		.headStats(900, MiningLevel.COBALT, 7.0f, 9f)
 		.handleStats(90)
 		.extraStats(-20)
-		.addItems(Item.ingotSteel);
+		.addItemValue(1, Item.ingotSteel);
+
+
+	@ApiStatus.Internal
+	public static void lock() {
+		if(locked) throw new IllegalStateException("Already locked!");
+		locked = true;
+	}
 
 
 	private final String id;
 	private final Color color;
 	private final MaterialType type;
-	private final Collection<ItemStack> items;
+	private final Map<ItemStack, Integer> itemMaterialValue;
+	private final Map<String, Float> groupMaterialValue;
 	private final Map<PartType, PartStatistics> statisticsMap;
 
 	public ArchitectMaterial(@NotNull String id, @NotNull String color, @NotNull MaterialType type) {
+		if(locked) throw new IllegalStateException("Locked!");
 		this.id = id;
 		this.color = Color.decode(color);
 		this.type = type;
-		this.items = new HashSet<>();
+		this.itemMaterialValue = new HashMap<>();
+		this.groupMaterialValue = new HashMap<>();
 		this.statisticsMap = new LinkedHashMap<>();
 
 		MATERIAL_REGISTRY.register(id(), this);
@@ -102,33 +127,54 @@ public class ArchitectMaterial {
 	}
 
 
-	public ArchitectMaterial addItems(IItemConvertible... items) {
+	public static int getActualMaterialValue(float displayValue) {
+		return Math.round(displayValue * MATERIAL_UNIT_VALUE);
+	}
+
+	public static float getDisplayMaterialValue(int actualValue) {
+		return Math.round((float) actualValue / MATERIAL_UNIT_VALUE * 100f) / 100f;
+	}
+
+
+	public ArchitectMaterial addItemValue(float value, IItemConvertible... items) {
+		int actualValue = getActualMaterialValue(value);
 		for (IItemConvertible item : items) {
-			this.items.add(item.asItem().getDefaultStack());
+			this.itemMaterialValue.put(item.asItem().getDefaultStack(), actualValue);
 		}
 
 		return this;
 	}
 
-	public ArchitectMaterial addItems(ItemStack... itemStacks) {
-		items.addAll(List.of(itemStacks));
-		return this;
-	}
-
-	public ArchitectMaterial addItemGroup(String group) {
-		List<ItemStack> list = Registries.ITEM_GROUPS.getItem(group);
-		if(list == null) throw new IllegalArgumentException("Invalid group: " + group);
-
-		items.addAll(list);
-		return this;
-	}
-
-	public boolean isThisMaterial(ItemStack itemStack) {
-		for (ItemStack item : items) {
-			if(item.itemID == itemStack.itemID && item.getMetadata() == itemStack.getMetadata()) return true;
+	public ArchitectMaterial addItemValue(float value, ItemStack... itemStacks) {
+		int actualValue = getActualMaterialValue(value);
+		for (ItemStack item : itemStacks) {
+			this.itemMaterialValue.put(item, actualValue);
 		}
 
-		return false;
+		return this;
+	}
+
+	public ArchitectMaterial addGroupValue(float value, String group) {
+		groupMaterialValue.put(group, value);
+		return this;
+	}
+
+	public Integer getMaterialValue(ItemStack itemStack) {
+		for (Map.Entry<ItemStack, Integer> entry : itemMaterialValue.entrySet()) {
+			ItemStack item = entry.getKey();
+			if(item.itemID == itemStack.itemID && item.getMetadata() == itemStack.getMetadata()) return entry.getValue();
+		}
+
+		return null;
+	}
+
+	public void initGroups() {
+		for (Map.Entry<String, Float> entry : groupMaterialValue.entrySet()) {
+			List<ItemStack> list = Registries.ITEM_GROUPS.getItem(entry.getKey());
+			if(list == null) throw new IllegalArgumentException("Invalid group: " + entry.getKey());
+
+			addItemValue(entry.getValue(), list.toArray(new ItemStack[0]));
+		}
 	}
 
 
@@ -195,8 +241,8 @@ public class ArchitectMaterial {
 		return type;
 	}
 
-	public Collection<ItemStack> items() {
-		return items;
+	public Map<ItemStack, Integer> getItemMaterialValue() {
+		return itemMaterialValue;
 	}
 
 	@Override
@@ -210,10 +256,5 @@ public class ArchitectMaterial {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
-	}
-
-
-	static {
-		new Registries();
 	}
 }

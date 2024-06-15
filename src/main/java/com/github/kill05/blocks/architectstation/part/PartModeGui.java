@@ -1,5 +1,6 @@
 package com.github.kill05.blocks.architectstation.part;
 
+import com.github.kill05.ArchitectTools;
 import com.github.kill05.blocks.architectstation.ArchitectTableButton;
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
 import com.github.kill05.blocks.architectstation.ChangePageButton;
@@ -7,8 +8,13 @@ import com.github.kill05.blocks.architectstation.tool.ToolModeGui;
 import com.github.kill05.inventory.container.TileContainer;
 import com.github.kill05.inventory.gui.TileContainerGui;
 import com.github.kill05.items.part.ArchitectPart;
+import com.github.kill05.materials.ArchitectMaterial;
+import com.github.kill05.materials.MaterialInfo;
 import com.github.kill05.utils.RenderUtils;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.render.FontRenderer;
 import net.minecraft.core.entity.player.EntityPlayer;
+import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.player.inventory.IInventory;
 import org.lwjgl.opengl.GL11;
 
@@ -62,5 +68,19 @@ public class PartModeGui extends TileContainerGui {
 				);
 			}
 		}
+	}
+
+	@Override
+	protected void drawGuiContainerForegroundLayer() {
+		FontRenderer fontRenderer = Minecraft.getMinecraft(this).fontRenderer;
+		ArchitectTableTileEntity tile = ((ArchitectTableTileEntity) getContainer().getTile());
+		IInventory inv = tile.getPartInventory();
+		ItemStack materialStack = inv.getStackInSlot(1);
+
+		ArchitectPart part = tile.getSelectedPart();
+		MaterialInfo info = ArchitectTools.getMaterialInfo(materialStack);
+		float amount = ArchitectMaterial.getDisplayMaterialValue(info.value() * (materialStack != null ? materialStack.stackSize : 0));
+		float materialCost = part != null ? ArchitectMaterial.getDisplayMaterialValue(part.getMaterialCost()) : 0;
+		fontRenderer.drawCenteredString(amount + "/" + materialCost, 151, 83, materialCost > amount ? 0x00c00000 : 0x0000c000);
 	}
 }

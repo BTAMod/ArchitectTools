@@ -43,7 +43,7 @@ public class PartModeContainer extends TileContainer {
 				return List.of(0);
 			}
 
-			if(ArchitectTools.getMaterial(slot.getStack()) != null) {
+			if(ArchitectTools.getMaterialInfo(slot.getStack()).material() != null) {
 				return List.of(1);
 			}
 
