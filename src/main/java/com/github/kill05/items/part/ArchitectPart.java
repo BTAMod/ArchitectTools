@@ -9,6 +9,7 @@ import com.github.kill05.items.part.statistics.PartStatistics;
 import com.github.kill05.materials.ArchitectMaterial;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.item.tag.ItemTags;
 import net.minecraft.core.lang.I18n;
 import sunsetsatellite.catalyst.core.util.ICustomDescription;
 import turniplabs.halplibe.helper.ItemBuilder;
@@ -61,6 +62,9 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 		this.materialCost = materialCost;
 		this.ordinal = VALUES.size();
 		this.validTypes = new ArrayList<>();
+
+		//noinspection unchecked
+		withTags(ItemTags.NOT_IN_CREATIVE_MENU);
 
 		VALUES.add(this);
 	}
@@ -134,4 +138,5 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 	public int getMaterialCost() {
 		return materialCost;
 	}
+
 }

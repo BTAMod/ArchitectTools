@@ -15,6 +15,7 @@ import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.EntityLiving;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
+import net.minecraft.core.item.tag.ItemTags;
 import net.minecraft.core.world.World;
 import sunsetsatellite.catalyst.core.util.ICustomDescription;
 import turniplabs.halplibe.helper.ItemBuilder;
@@ -56,6 +57,8 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 
 		setMaxStackSize(1);
 		addValidStatistic(PartStatistic.DURABILITY);
+		//noinspection unchecked
+		withTags(ItemTags.NOT_IN_CREATIVE_MENU);
 
 		VALUES.add(this);
 	}

@@ -34,10 +34,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import turniplabs.halplibe.helper.BlockBuilder;
-import turniplabs.halplibe.helper.EntityHelper;
-import turniplabs.halplibe.helper.ItemBuilder;
-import turniplabs.halplibe.helper.RecipeBuilder;
+import turniplabs.halplibe.helper.*;
 import turniplabs.halplibe.util.ClientStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
 
@@ -235,13 +232,24 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	// Code
 	@Override
 	public void onInitialize() {
-		EntityHelper.createTileEntity(ArchitectTableTileEntity.class, "architect_station");
-
-		// Register items
+		// Register materials and items
 		ClassUtils.initializeClasses(
+			ArchitectMaterial.class,
 			ArchitectPart.class,
 			ArchitectTool.class
 		);
+
+		ItemStack parent = BLANK_PATTERN.getDefaultStack();
+		for (ArchitectMaterial material : ArchitectMaterial.MATERIAL_REGISTRY) {
+			for (ArchitectPart part : ArchitectPart.VALUES) {
+				try {
+					CreativeHelper.setParent(ArchitectTools.createPartStack(material, part), parent);
+				} catch (ArchitectItemException ignored) { // Some parts can't be made out of certain materials
+				}
+			}
+		}
+
+		EntityHelper.createTileEntity(ArchitectTableTileEntity.class, "architect_station");
 
 		LOGGER.info("Architect's Tools initialized.");
 	}

@@ -5,11 +5,12 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "com.github.kill05.MixinConfigPlugin",
   "mixins": [
+    "CreativeEntryMixin",
     "ItemStackMixin",
     "StringTagMixin",
-    "disablevanilla.ItemToolSwordMixin",
     "disablevanilla.ItemToolMixin",
-    "disablevanilla.ItemToolPickaxeMixin"
+    "disablevanilla.ItemToolPickaxeMixin",
+    "disablevanilla.ItemToolSwordMixin"
   ],
   "client": [
   ],
