@@ -36,7 +36,7 @@ public class ArchitectTableButton extends GuiButton {
 			);
 		}
 
-		RenderUtils.getItemModel(item.asItem()).renderItemIntoGui(
+		RenderUtils.getItemModel(item).renderItemIntoGui(
 			Tessellator.instance, mc.fontRenderer, mc.renderEngine,
 			item.getDefaultStack(),
 			xPosition, //+ item.getButtonRenderOffsetX(),

@@ -6,6 +6,7 @@ import com.github.kill05.items.tool.ArchitectTool;
 import com.github.kill05.utils.InventoryUtils;
 import com.mojang.nbt.CompoundTag;
 import net.minecraft.core.block.entity.TileEntity;
+import net.minecraft.core.net.packet.Packet;
 import net.minecraft.core.player.inventory.IInventory;
 import net.minecraft.core.player.inventory.InventoryBasic;
 import org.jetbrains.annotations.NotNull;
@@ -33,6 +34,8 @@ public class ArchitectTableTileEntity extends TileEntity {
 
 		InventoryUtils.loadInventory(partInventory, tag.getList(PART_MODE));
 		InventoryUtils.loadInventory(toolInventory, tag.getList(TOOL_MODE));
+		this.selectedPart = ArchitectPart.fromIndex(tag.getInteger("selected_part"));
+		this.selectedTool = ArchitectTool.fromIndex(tag.getInteger("selected_tool"));
 	}
 
 	@Override
@@ -41,8 +44,14 @@ public class ArchitectTableTileEntity extends TileEntity {
 
 		tag.putList(PART_MODE, InventoryUtils.writeInventory(partInventory));
 		tag.putList(TOOL_MODE, InventoryUtils.writeInventory(toolInventory));
+		tag.putInt("selected_part", selectedPart != null ? selectedPart.ordinal() : -1);
+		tag.putInt("selected_tool", selectedTool != null ? selectedTool.ordinal() : -1);
 	}
 
+	@Override
+	public Packet getDescriptionPacket() {
+		return null; //new Packet140TileEntityData(this);
+	}
 
 	public @NotNull IInventory getPartInventory() {
 		return partInventory;

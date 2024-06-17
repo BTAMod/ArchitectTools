@@ -1,6 +1,5 @@
 package com.github.kill05.blocks.architectstation.inventory.tool;
 
-import com.github.kill05.ArchitectGuis;
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
 import com.github.kill05.blocks.architectstation.inventory.ArchitectStationGui;
 import com.github.kill05.inventory.container.TileContainer;
@@ -9,7 +8,6 @@ import com.github.kill05.items.tool.ToolPartInfo;
 import com.github.kill05.utils.RenderUtils;
 import net.minecraft.core.entity.player.EntityPlayer;
 import org.lwjgl.opengl.GL11;
-import turniplabs.halplibe.helper.gui.registered.RegisteredGui;
 
 public class ToolModeGui extends ArchitectStationGui<ArchitectTool> {
 
@@ -39,10 +37,5 @@ public class ToolModeGui extends ArchitectStationGui<ArchitectTool> {
 				xSize, 16 * info.part().ordinal(), 16, 16
 			);
 		}
-	}
-
-	@Override
-	public RegisteredGui getNextGui() {
-		return ArchitectGuis.PART_MODE;
 	}
 }

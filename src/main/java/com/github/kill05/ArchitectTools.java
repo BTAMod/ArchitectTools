@@ -11,7 +11,6 @@ import com.github.kill05.items.tool.ArchitectTool;
 import com.github.kill05.items.tool.ToolPartInfo;
 import com.github.kill05.materials.ArchitectMaterial;
 import com.github.kill05.materials.MaterialInfo;
-import com.github.kill05.packet.PacketSetTableOutput;
 import com.github.kill05.utils.ClassUtils;
 import com.github.kill05.utils.ItemUtils;
 import com.mojang.nbt.ListTag;
@@ -250,7 +249,6 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 			}
 		}
 
-		NetworkHelper.register(PacketSetTableOutput.class, true, true);
 		EntityHelper.createTileEntity(ArchitectTableTileEntity.class, "architect_station");
 
 		LOGGER.info("Architect's Tools initialized.");

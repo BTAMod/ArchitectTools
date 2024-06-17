@@ -51,6 +51,12 @@ public class ArchitectPart extends Item implements IArchitectItem, ICustomDescri
 			.build(new ArchitectPart(id, ArchitectMaterial.getActualMaterialValue(materialCost)));
 	}
 
+	public static ArchitectPart fromIndex(int index) {
+		if(index < 0 || index >= VALUES.size()) return null;
+		return VALUES.get(index);
+	}
+
+
 	private final String partId;
 	private final int ordinal;
 	private final int materialCost;

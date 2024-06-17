@@ -8,6 +8,7 @@ import net.minecraft.core.block.entity.TileEntity;
 import net.minecraft.core.block.material.Material;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.world.World;
+import net.minecraft.server.entity.player.EntityPlayerMP;
 
 public class ArchitectTableBlock extends BlockTileEntity {
 
@@ -25,6 +26,9 @@ public class ArchitectTableBlock extends BlockTileEntity {
 		if(player.isSneaking()) return false;
 
 		ArchitectGuis.PART_MODE.open(player, x, y, z);
+		if(player instanceof EntityPlayerMP playerMP) {
+			//playerMP.playerNetServerHandler.sendPacket(new Packet140TileEntityData(world.getBlockTileEntity(x, y, z)));
+		}
 
 		return true;
 	}
@@ -32,7 +36,7 @@ public class ArchitectTableBlock extends BlockTileEntity {
 
 	@Override
 	public void onBlockRemoved(World world, int x, int y, int z, int data) {
-		ArchitectTableTileEntity tile = ((ArchitectTableTileEntity) world.getBlockTileEntity(x, y, z));
+		ArchitectTableTileEntity tile = (ArchitectTableTileEntity) world.getBlockTileEntity(x, y, z);
 		InventoryUtils.dropInventoryContents(tile.getPartInventory(), world, x, y, z);
 		InventoryUtils.dropInventoryContents(tile.getToolInventory(), world, x, y, z);
 		super.onBlockRemoved(world, x, y, z, data);

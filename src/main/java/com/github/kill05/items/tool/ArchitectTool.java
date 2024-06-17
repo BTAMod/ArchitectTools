@@ -39,6 +39,11 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 			.build(tool);
 	}
 
+	public static ArchitectTool fromIndex(int index) {
+		if(index < 0 || index >= VALUES.size()) return null;
+		return VALUES.get(index);
+	}
+
 	private final String toolId;
 	private final int ordinal;
 	private final Map<PartStatistic<?>, Float> validStatistics; //value is multiplier
