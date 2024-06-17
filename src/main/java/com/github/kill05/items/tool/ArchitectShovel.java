@@ -8,7 +8,7 @@ public class ArchitectShovel extends ArchitectTool {
 
 	public ArchitectShovel() {
 		super("shovel");
-		addPart(ArchitectPart.SHOVEL_HEAD, "shovel/head");
+		addPart(ArchitectPart.SHOVEL_HEAD, "shovel/head", "shovel/broken_head");
 		addPart(ArchitectPart.TOOL_ROD, "shovel/handle");
 		addPart(ArchitectPart.TOOL_BINDING, "shovel/binding");
 

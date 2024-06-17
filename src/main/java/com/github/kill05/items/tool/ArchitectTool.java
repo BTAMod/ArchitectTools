@@ -9,6 +9,7 @@ import com.github.kill05.items.part.PartType;
 import com.github.kill05.items.part.statistics.PartStatistic;
 import com.github.kill05.items.part.statistics.PartStatistics;
 import com.github.kill05.materials.ArchitectMaterial;
+import com.github.kill05.utils.ItemUtils;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.data.tag.Tag;
 import net.minecraft.core.entity.Entity;
@@ -92,6 +93,7 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 
 	@Override
 	public float getStrVsBlock(ItemStack itemStack, Block block) {
+		if(ItemUtils.isBroken(itemStack)) return super.getStrVsBlock(itemStack, block);
 		return canHarvestBlock(itemStack, block) ? getStatistic(itemStack, PartStatistic.MINING_SPEED) : super.getStrVsBlock(itemStack, block);
 	}
 
@@ -105,6 +107,7 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 	}
 
 	public int getDamageVsEntity(Entity entity, ItemStack itemStack) {
+		if(ItemUtils.isBroken(itemStack)) return super.getDamageVsEntity(entity);
 		return getStatistic(itemStack, PartStatistic.ENTITY_DAMAGE).intValue();
 	}
 
@@ -193,12 +196,20 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 		return part;
 	}
 
+	protected ToolPartInfo addPart(ArchitectPart part, PartType type, String texture, String brokenTexture) {
+		return addPart(new ToolPartInfo(part, type, texture, brokenTexture));
+	}
+
 	protected ToolPartInfo addPart(ArchitectPart part, PartType type, String texture) {
-		return addPart(new ToolPartInfo(part, type, texture));
+		return addPart(part, type, texture, texture);
+	}
+
+	protected ToolPartInfo addPart(ArchitectPart part, String texture, String brokenTexture) {
+		return addPart(part, part.getValidTypes().get(0), texture, brokenTexture);
 	}
 
 	protected ToolPartInfo addPart(ArchitectPart part, String texture) {
-		return addPart(part, part.getValidTypes().get(0), texture);
+		return addPart(part, texture, texture);
 	}
 
 	@SafeVarargs

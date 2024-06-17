@@ -11,7 +11,7 @@ public class ArchitectPickaxe extends ArchitectTool {
 
 	public ArchitectPickaxe() {
 		super("pickaxe");
-		addPart(ArchitectPart.PICKAXE_HEAD, "pickaxe/head");
+		addPart(ArchitectPart.PICKAXE_HEAD, "pickaxe/head", "pickaxe/broken_head");
 		addPart(ArchitectPart.TOOL_BINDING, "pickaxe/binding").renderPriority(-1);
 		addPart(ArchitectPart.TOOL_ROD, "pickaxe/handle");
 

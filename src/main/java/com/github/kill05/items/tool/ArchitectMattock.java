@@ -14,7 +14,7 @@ public class ArchitectMattock extends ArchitectTool {
 	public ArchitectMattock() {
 		super("mattock");
 
-		addPart(ArchitectPart.AXE_HEAD, "mattock/head");
+		addPart(ArchitectPart.AXE_HEAD, "mattock/head", "mattock/broken_head");
 		addPart(ArchitectPart.SHOVEL_HEAD, "mattock/back");
 		addPart(ArchitectPart.TOOL_ROD, "mattock/handle").renderPriority(1);
 

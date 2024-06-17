@@ -10,7 +10,7 @@ public class ArchitectShortsword extends ArchitectTool {
 	public ArchitectShortsword() {
 		super("shortsword");
 
-		addPart(ArchitectPart.SWORD_BLADE, "shortsword/blade");
+		addPart(ArchitectPart.SWORD_BLADE, "shortsword/blade", "shortsword/broken_blade");
 		addPart(ArchitectPart.SWORD_GUARD, "shortsword/guard");
 		addPart(ArchitectPart.TOOL_ROD, "shortsword/handle").renderPriority(1);
 

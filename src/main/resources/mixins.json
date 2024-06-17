@@ -6,6 +6,7 @@
   "plugin": "com.github.kill05.MixinConfigPlugin",
   "mixins": [
     "CreativeEntryMixin",
+    "ItemModelStandardMixin",
     "ItemStackMixin",
     "StringTagMixin",
     "disablevanilla.ItemToolMixin",

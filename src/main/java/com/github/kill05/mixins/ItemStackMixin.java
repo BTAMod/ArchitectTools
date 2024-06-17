@@ -1,6 +1,7 @@
 package com.github.kill05.mixins;
 
 import com.github.kill05.items.tool.ArchitectTool;
+import com.github.kill05.utils.ItemUtils;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.item.Item;
@@ -10,6 +11,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 //todo: remove once 7.2_pre2 comes out
@@ -19,16 +21,13 @@ public abstract class ItemStackMixin {
 	@Shadow
 	public abstract Item getItem();
 
-	@Shadow
-	public int itemID;
-
 	@Inject(
 		method = "canHarvestBlock",
 		at = @At(value = "HEAD"),
 		cancellable = true
 	)
 	public void canHarvestBlockMixin(Block block, CallbackInfoReturnable<Boolean> cir) {
-		if(getItem() instanceof ArchitectTool tool) {
+		if (getItem() instanceof ArchitectTool tool) {
 			cir.setReturnValue(tool.canHarvestBlock(getThis(), block));
 		}
 	}
@@ -39,7 +38,7 @@ public abstract class ItemStackMixin {
 		cancellable = true
 	)
 	public void getMaxDamageMixin(CallbackInfoReturnable<Integer> cir) {
-		if(getItem() instanceof ArchitectTool tool) {
+		if (getItem() instanceof ArchitectTool tool) {
 			cir.setReturnValue(tool.getMaxDamage(getThis()));
 		}
 	}
@@ -50,7 +49,19 @@ public abstract class ItemStackMixin {
 		cancellable = true
 	)
 	public void isItemStackDamageableMixin(CallbackInfoReturnable<Boolean> cir) {
-		if(getItem() instanceof ArchitectTool) cir.setReturnValue(true);
+		if (getItem() instanceof ArchitectTool && !ItemUtils.isBroken(getThis())) {
+			cir.setReturnValue(true);
+		}
+	}
+
+	@Inject(
+		method = "damageItem",
+		at = @At(value = "FIELD", target = "Lnet/minecraft/core/item/ItemStack;stackSize:I", ordinal = 1),
+		cancellable = true
+	)
+	public void injectDamageItem(int i, Entity entity, CallbackInfo ci) {
+		if (!(getItem() instanceof ArchitectTool)) return;
+		ci.cancel();
 	}
 
 	@Inject(
@@ -59,7 +70,7 @@ public abstract class ItemStackMixin {
 		cancellable = true
 	)
 	public void getDamageVsEntityMixin(Entity entity, CallbackInfoReturnable<Integer> cir) {
-		if(getItem() instanceof ArchitectTool item) {
+		if (getItem() instanceof ArchitectTool item) {
 			cir.setReturnValue(item.getDamageVsEntity(entity, getThis()));
 		}
 	}

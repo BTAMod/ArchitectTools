@@ -5,6 +5,7 @@ import com.github.kill05.items.part.ArchitectPart;
 import com.github.kill05.items.part.PartType;
 import com.github.kill05.materials.ArchitectMaterial;
 import com.github.kill05.materials.MaterialType;
+import com.github.kill05.utils.ItemUtils;
 import net.minecraft.client.render.stitcher.IconCoordinate;
 import net.minecraft.core.item.ItemStack;
 
@@ -15,6 +16,7 @@ public class ToolPartInfo {
 	private final ArchitectPart part;
 	private final PartType type;
 	private final String texture;
+	private final String brokenTexture;
 	private int renderPriority;
 	private int renderOffsetX;
 	private int renderOffsetY;
@@ -23,17 +25,21 @@ public class ToolPartInfo {
 	private int index;
 	private int partIndex;
 
-	public ToolPartInfo(ArchitectPart part, PartType type, String texture) {
+	public ToolPartInfo(ArchitectPart part, PartType type, String texture, String brokenTexture) {
 		if(!part.getValidTypes().contains(type))
 			throw new IllegalArgumentException(String.format("Invalid type '%s' for part '%s'.", type, part.id));
 
 		this.part = part;
 		this.type = type;
 		this.texture = texture;
+		this.brokenTexture = brokenTexture;
 		this.index = -1;
 		this.partIndex = -1;
 	}
 
+	public ToolPartInfo(ArchitectPart part, PartType type, String texture) {
+		this(part, type, texture, texture);
+	}
 
 	public void setTool(ArchitectTool tool) {
 		if(this.tool != null) throw new IllegalStateException("Part already has a tool!");
@@ -51,7 +57,7 @@ public class ToolPartInfo {
 
 	public IconCoordinate getIcon(ItemStack itemStack) {
 		ArchitectMaterial material = ArchitectTools.getToolPart(itemStack, this);
-		return MaterialType.getTexture(texture, material);
+		return MaterialType.getTexture(ItemUtils.isBroken(itemStack) ? brokenTexture : texture, material);
 	}
 
 	public ArchitectPart part() {
