@@ -2,7 +2,7 @@ package com.github.kill05.items.tool;
 
 import com.github.kill05.ArchitectTools;
 import com.github.kill05.config.ArchitectConfig;
-import com.github.kill05.items.ArchitectItem;
+import com.github.kill05.items.IArchitectItem;
 import com.github.kill05.items.model.ArchitectToolModel;
 import com.github.kill05.items.part.ArchitectPart;
 import com.github.kill05.items.part.PartType;
@@ -23,7 +23,7 @@ import turniplabs.halplibe.helper.ItemBuilder;
 import java.util.*;
 
 @SuppressWarnings("StaticInitializerReferencesSubClass")
-public abstract class ArchitectTool extends Item implements ArchitectItem, ICustomDescription {
+public abstract class ArchitectTool extends Item implements IArchitectItem, ICustomDescription {
 
 	public static final List<ArchitectTool> VALUES = new ArrayList<>();
 
@@ -224,6 +224,7 @@ public abstract class ArchitectTool extends Item implements ArchitectItem, ICust
 		return toolId;
 	}
 
+	@Override
 	public int ordinal() {
 		return ordinal;
 	}

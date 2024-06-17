@@ -2,7 +2,7 @@ package com.github.kill05.utils;
 
 import com.github.kill05.ArchitectTools;
 import com.github.kill05.config.ArchitectConfig;
-import com.github.kill05.items.ArchitectItem;
+import com.github.kill05.items.IArchitectItem;
 import com.github.kill05.items.part.PartType;
 import com.github.kill05.items.tool.ArchitectTool;
 import com.mojang.nbt.CompoundTag;
@@ -20,7 +20,7 @@ public final class ItemUtils {
 	}
 
 	public static @NotNull CompoundTag getArchitectCompound(@NotNull ItemStack item) {
-		if(!(item.getItem() instanceof ArchitectItem))
+		if(!(item.getItem() instanceof IArchitectItem))
 			throw new IllegalArgumentException("Item must be an ArchitectItem.");
 
 		return NBTUtils.getOrCreateCompound(item.getData(), ArchitectTools.MOD_ID);

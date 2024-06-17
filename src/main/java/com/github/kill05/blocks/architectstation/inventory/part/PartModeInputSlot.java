@@ -1,4 +1,4 @@
-package com.github.kill05.blocks.architectstation.part;
+package com.github.kill05.blocks.architectstation.inventory.part;
 
 import com.github.kill05.ArchitectTools;
 import net.minecraft.core.item.ItemStack;

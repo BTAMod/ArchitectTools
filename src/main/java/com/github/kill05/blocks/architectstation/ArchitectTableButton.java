@@ -1,7 +1,7 @@
 package com.github.kill05.blocks.architectstation;
 
 import com.github.kill05.ArchitectTools;
-import com.github.kill05.items.ArchitectItem;
+import com.github.kill05.items.IArchitectItem;
 import com.github.kill05.utils.RenderUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -11,9 +11,9 @@ import net.minecraft.core.item.Item;
 public class ArchitectTableButton extends GuiButton {
 
 	private final ArchitectTableTileEntity tile;
-	private final ArchitectItem item;
+	private final IArchitectItem item;
 
-	public ArchitectTableButton(ArchitectTableTileEntity tile, ArchitectItem item, int x, int y) {
+	public ArchitectTableButton(ArchitectTableTileEntity tile, IArchitectItem item, int x, int y) {
 		super(0, x, y, 16, 16, "");
 		this.tile = tile;
 		this.item = item;
@@ -45,7 +45,7 @@ public class ArchitectTableButton extends GuiButton {
 		);
 	}
 
-	public ArchitectItem getItem() {
+	public IArchitectItem getItem() {
 		return item;
 	}
 

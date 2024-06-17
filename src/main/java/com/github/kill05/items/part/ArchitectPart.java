@@ -2,7 +2,7 @@ package com.github.kill05.items.part;
 
 import com.github.kill05.ArchitectTools;
 import com.github.kill05.config.ArchitectConfig;
-import com.github.kill05.items.ArchitectItem;
+import com.github.kill05.items.IArchitectItem;
 import com.github.kill05.items.model.ArchitectPartModel;
 import com.github.kill05.items.part.statistics.PartStatistic;
 import com.github.kill05.items.part.statistics.PartStatistics;
@@ -19,7 +19,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class ArchitectPart extends Item implements ArchitectItem, ICustomDescription {
+public class ArchitectPart extends Item implements IArchitectItem, ICustomDescription {
 
 	public static final List<ArchitectPart> VALUES = new ArrayList<>();
 
@@ -117,6 +117,11 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 		return true;
 	}
 
+	@Override
+	public int ordinal() {
+		return ordinal;
+	}
+
 
 	public ArchitectPart validTypes(PartType... types) {
 		validTypes.addAll(List.of(types));
@@ -131,9 +136,7 @@ public class ArchitectPart extends Item implements ArchitectItem, ICustomDescrip
 		return partId;
 	}
 
-	public int ordinal() {
-		return ordinal;
-	}
+
 
 	public int getMaterialCost() {
 		return materialCost;

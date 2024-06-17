@@ -23,7 +23,9 @@ public class ArchitectTableBlock extends BlockTileEntity {
 	@Override
 	public boolean blockActivated(World world, int x, int y, int z, EntityPlayer player) {
 		if(player.isSneaking()) return false;
+
 		ArchitectGuis.PART_MODE.open(player, x, y, z);
+
 		return true;
 	}
 

@@ -1,7 +1,7 @@
-package com.github.kill05.blocks.architectstation.tool;
+package com.github.kill05.blocks.architectstation.inventory.tool;
 
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
-import com.github.kill05.inventory.container.TileContainer;
+import com.github.kill05.blocks.architectstation.inventory.ArchitectStationContainer;
 import com.github.kill05.items.tool.ArchitectTool;
 import com.github.kill05.items.tool.ToolPartInfo;
 import net.minecraft.core.InventoryAction;
@@ -11,7 +11,7 @@ import net.minecraft.core.player.inventory.slot.Slot;
 
 import java.util.List;
 
-public class ToolModeContainer extends TileContainer {
+public class ToolModeContainer extends ArchitectStationContainer<ArchitectTool> {
 
 	public ToolModeContainer(ArchitectTableTileEntity tile, EntityPlayer player) {
 		super(tile, tile.getToolInventory());
@@ -46,7 +46,17 @@ public class ToolModeContainer extends TileContainer {
 	}
 
 	@Override
-	public ArchitectTableTileEntity getTile() {
-		return (ArchitectTableTileEntity) super.getTile();
+	public List<ArchitectTool> getModeValues() {
+		return ArchitectTool.VALUES;
+	}
+
+	@Override
+	public void doSetSelected(ArchitectTool value) {
+		getTile().setSelectedTool(value);
+	}
+
+	@Override
+	public ArchitectTool getSelected() {
+		return getTile().getSelectedTool();
 	}
 }

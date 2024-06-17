@@ -1,15 +1,16 @@
-package com.github.kill05.blocks.architectstation.part;
+package com.github.kill05.blocks.architectstation.inventory.part;
 
 import com.github.kill05.ArchitectTools;
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
-import com.github.kill05.inventory.container.TileContainer;
+import com.github.kill05.blocks.architectstation.inventory.ArchitectStationContainer;
+import com.github.kill05.items.part.ArchitectPart;
 import net.minecraft.core.InventoryAction;
 import net.minecraft.core.entity.player.EntityPlayer;
 import net.minecraft.core.player.inventory.slot.Slot;
 
 import java.util.List;
 
-public class PartModeContainer extends TileContainer {
+public class PartModeContainer extends ArchitectStationContainer<ArchitectPart> {
 
 	public PartModeContainer(ArchitectTableTileEntity tile, EntityPlayer player) {
 		super(tile, tile.getPartInventory());
@@ -51,5 +52,20 @@ public class PartModeContainer extends TileContainer {
 		}
 
 		return getSlots(3, 36, true);
+	}
+
+	@Override
+	public List<ArchitectPart> getModeValues() {
+		return ArchitectPart.VALUES;
+	}
+
+	@Override
+	public void doSetSelected(ArchitectPart value) {
+		getTile().setSelectedPart(value);
+	}
+
+	@Override
+	public ArchitectPart getSelected() {
+		return getTile().getSelectedPart();
 	}
 }

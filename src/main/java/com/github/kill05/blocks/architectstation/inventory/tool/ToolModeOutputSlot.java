@@ -1,4 +1,4 @@
-package com.github.kill05.blocks.architectstation.tool;
+package com.github.kill05.blocks.architectstation.inventory.tool;
 
 import com.github.kill05.ArchitectTools;
 import com.github.kill05.blocks.architectstation.ArchitectTableTileEntity;
