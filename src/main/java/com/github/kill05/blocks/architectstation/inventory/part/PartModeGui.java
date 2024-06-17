@@ -48,12 +48,17 @@ public class PartModeGui extends ArchitectStationGui<ArchitectPart> {
 		FontRenderer fontRenderer = Minecraft.getMinecraft(this).fontRenderer;
 		ArchitectTableTileEntity tile = getContainer().getTile();
 		IInventory inv = tile.getPartInventory();
+		ItemStack patternStack = inv.getStackInSlot(0);
 		ItemStack materialStack = inv.getStackInSlot(1);
 
 		ArchitectPart part = tile.getSelectedPart();
 		MaterialInfo info = ArchitectTools.getMaterialInfo(materialStack);
 		float amount = ArchitectMaterial.getDisplayMaterialValue(info.value() * (materialStack != null ? materialStack.stackSize : 0));
 		float materialCost = part != null ? ArchitectMaterial.getDisplayMaterialValue(part.getMaterialCost()) : 0;
-		fontRenderer.drawCenteredString(amount + "/" + materialCost, 151, 83, materialCost > amount ? 0x00c00000 : 0x0000c000);
+
+		boolean hasPattern = part == ArchitectPart.REPAIR_KIT || (patternStack != null && patternStack.stackSize > 0);
+		int color = materialCost > amount ? 0x00c00000 : (hasPattern ? 0x0000c000 : 0x00f07000);
+
+		fontRenderer.drawCenteredString(amount + "/" + materialCost, 151, 83, color);
 	}
 }
