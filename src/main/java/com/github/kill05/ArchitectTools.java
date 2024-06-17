@@ -11,6 +11,7 @@ import com.github.kill05.items.tool.ArchitectTool;
 import com.github.kill05.items.tool.ToolPartInfo;
 import com.github.kill05.materials.ArchitectMaterial;
 import com.github.kill05.materials.MaterialInfo;
+import com.github.kill05.recipe.RecipeEntryRepairTool;
 import com.github.kill05.utils.ClassUtils;
 import com.github.kill05.utils.ItemUtils;
 import com.mojang.nbt.ListTag;
@@ -29,7 +30,6 @@ import net.minecraft.core.data.registry.recipe.entry.RecipeEntryCrafting;
 import net.minecraft.core.item.Item;
 import net.minecraft.core.item.ItemStack;
 import net.minecraft.core.sound.BlockSounds;
-import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -42,10 +42,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
@@ -206,17 +203,17 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 		return getMaterial(materialTag.getValue());
 	}
 
-	public static List<Pair<@NotNull ToolPartInfo, @Nullable ArchitectMaterial>> getToolParts(@NotNull ItemStack item, @Nullable PartType type) {
+	public static Map<@NotNull ToolPartInfo, @Nullable ArchitectMaterial> getToolParts(@NotNull ItemStack item, @Nullable PartType type) {
 		if (!(item.getItem() instanceof ArchitectTool tool))
 			throw new ArchitectItemException("Item is not an ArchitectTool.");
 
-		ArrayList<Pair<ToolPartInfo, ArchitectMaterial>> list = new ArrayList<>();
+		Map<ToolPartInfo, ArchitectMaterial> map = new LinkedHashMap<>();
 		for (ToolPartInfo info : tool.getPartList()) {
 			if (type != null && info.type() != type) continue;
-			list.add(Pair.of(info, getToolPart(item, info)));
+			map.put(info, getToolPart(item, info));
 		}
 
-		return list;
+		return map;
 	}
 
 	public static void iterateToolParts(@NotNull ItemStack item, boolean renderOrder, @NotNull BiConsumer<@NotNull ToolPartInfo, @Nullable ArchitectMaterial> consumer) {
@@ -343,6 +340,8 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 			.addInput('b', BLANK_PATTERN)
 			.addInput('w', Block.workbench)
 			.create("architect_table", ARCHITECT_TABLE_BLOCK.getDefaultStack());
+
+		Registries.RECIPES.addCustomRecipe(MOD_ID + ":workbench/repair_tool", new RecipeEntryRepairTool());
 	}
 
 	@Override

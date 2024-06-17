@@ -216,6 +216,8 @@ public class ArchitectMaterial {
 	}
 
 	public boolean isValidPart(ArchitectPart part) {
+		if(part == ArchitectPart.REPAIR_KIT) return true;
+
 		for (PartType type : part.getValidTypes()) {
 			if(getStatistics(type) != null) return true;
 		}

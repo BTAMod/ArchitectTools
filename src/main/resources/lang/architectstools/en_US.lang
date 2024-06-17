@@ -1,6 +1,7 @@
 # Items
 item.architectstools.blank_pattern.name = Blank Pattern
 
+item.architectstools.repair_kit.name = %s Repair Kit
 item.architectstools.tool_rod.name = %s Tool Rod
 item.architectstools.tool_binding.name = %s Tool Binding
 item.architectstools.pickaxe_head.name = %s Pickaxe Head

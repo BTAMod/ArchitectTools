@@ -23,24 +23,28 @@ public class PartModeOutputSlot extends OutputSlot {
 
 	@Override
 	public void onPickupFromSlot(ItemStack itemStack) {
-		// Remove 1 pattern
 		IInventory inv = tile.getPartInventory();
-		inv.decrStackSize(0, 1);
+		ArchitectPart part = tile.getSelectedPart();
+		if(part == null) return;
+
+		// Remove 1 pattern
+		if(part != ArchitectPart.REPAIR_KIT) inv.decrStackSize(0, 1);
 
 		// Remove the correct amount of material
 		MaterialInfo info = ArchitectTools.getMaterialInfo(inv.getStackInSlot(1));
-		ArchitectPart part = (ArchitectPart) itemStack.getItem();
 		inv.decrStackSize(1, part.getMaterialCost() / info.value());
 	}
 
 	@Override
 	public @Nullable ItemStack getOutput() {
-		if(tile.getSelectedPart() == null) return null;
-		if(!ItemUtils.compare(tile.getPartInventory().getStackInSlot(0), ArchitectTools.BLANK_PATTERN)) return null;
+		ArchitectPart part = tile.getSelectedPart();
+		ItemStack patternStack = tile.getPartInventory().getStackInSlot(0);
+		if(part == null) return null;
+		if(part != ArchitectPart.REPAIR_KIT && !ItemUtils.compare(patternStack, ArchitectTools.BLANK_PATTERN)) return null;
 
 		try {
 			ItemStack materialItem = tile.getPartInventory().getStackInSlot(1);
-			return ArchitectTools.createPartStack(materialItem, tile.getSelectedPart());
+			return ArchitectTools.createPartStack(materialItem, part);
 		} catch (InvalidMaterialException | ArchitectItemException e) {
 			return null;
 		}

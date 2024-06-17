@@ -23,6 +23,8 @@ public class ArchitectPart extends Item implements IArchitectItem, ICustomDescri
 
 	public static final List<ArchitectPart> VALUES = new ArrayList<>();
 
+	public static final ArchitectPart REPAIR_KIT = partItem("repair_kit", "part/repair_kit", 2);
+
 	public static final ArchitectPart TOOL_ROD = partItem("tool_rod", "part/tool_rod", 1)
 		.validTypes(PartType.HANDLE, PartType.EXTRA);
 
@@ -120,7 +122,7 @@ public class ArchitectPart extends Item implements IArchitectItem, ICustomDescri
 
 	@Override
 	public boolean renderPattern() {
-		return true;
+		return this != REPAIR_KIT;
 	}
 
 	@Override
