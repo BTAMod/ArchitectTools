@@ -9,7 +9,6 @@ import com.github.kill05.items.part.PartType;
 import com.github.kill05.items.part.statistics.PartStatistic;
 import com.github.kill05.items.part.statistics.PartStatistics;
 import com.github.kill05.materials.ArchitectMaterial;
-import com.github.kill05.utils.ItemUtils;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.data.tag.Tag;
 import net.minecraft.core.entity.Entity;
@@ -70,6 +69,11 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 	}
 
 
+	public static boolean isToolBroken(ItemStack item) {
+		return item.getMetadata() >= item.getMaxDamage();
+	}
+
+
 	//todo: remove once 7.2-pre2 comes out (need itemstack argument)
 	@Override
 	public boolean canHarvestBlock(Block block) {
@@ -93,12 +97,14 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 
 	@Override
 	public float getStrVsBlock(ItemStack itemStack, Block block) {
-		if(ItemUtils.isBroken(itemStack)) return super.getStrVsBlock(itemStack, block);
+		if(isToolBroken(itemStack)) return super.getStrVsBlock(itemStack, block);
 		return canHarvestBlock(itemStack, block) ? getStatistic(itemStack, PartStatistic.MINING_SPEED) : super.getStrVsBlock(itemStack, block);
 	}
 
 	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
 	public boolean canHarvestBlock(ItemStack itemStack, Block block) {
+		if(isToolBroken(itemStack)) return false;
+
 		for (Tag<Block> mineableTag : mineableTags) {
 			if(block.hasTag(mineableTag)) return true;
 		}
@@ -107,7 +113,7 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 	}
 
 	public int getDamageVsEntity(Entity entity, ItemStack itemStack) {
-		if(ItemUtils.isBroken(itemStack)) return super.getDamageVsEntity(entity);
+		if(isToolBroken(itemStack)) return super.getDamageVsEntity(entity);
 		return getStatistic(itemStack, PartStatistic.ENTITY_DAMAGE).intValue();
 	}
 

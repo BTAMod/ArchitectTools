@@ -1,7 +1,6 @@
 package com.github.kill05.mixins;
 
 import com.github.kill05.items.tool.ArchitectTool;
-import com.github.kill05.utils.ItemUtils;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.item.Item;
@@ -49,9 +48,17 @@ public abstract class ItemStackMixin {
 		cancellable = true
 	)
 	public void isItemStackDamageableMixin(CallbackInfoReturnable<Boolean> cir) {
-		if (getItem() instanceof ArchitectTool && !ItemUtils.isBroken(getThis())) {
-			cir.setReturnValue(true);
-		}
+		if (getItem() instanceof ArchitectTool) cir.setReturnValue(true);
+	}
+
+	@Inject(
+		method = "damageItem",
+		at = @At(value = "FIELD", target = "Lnet/minecraft/core/item/ItemStack;metadata:I", ordinal = 0, shift = At.Shift.BEFORE),
+		cancellable = true
+	)
+	public void injectDamageItem(int i, Entity entity, CallbackInfo ci) {
+		if (!(getItem() instanceof ArchitectTool)) return;
+		if(ArchitectTool.isToolBroken(getThis())) ci.cancel();
 	}
 
 	@Inject(
@@ -59,7 +66,7 @@ public abstract class ItemStackMixin {
 		at = @At(value = "FIELD", target = "Lnet/minecraft/core/item/ItemStack;stackSize:I", ordinal = 1),
 		cancellable = true
 	)
-	public void injectDamageItem(int i, Entity entity, CallbackInfo ci) {
+	public void injectBreakItem(int i, Entity entity, CallbackInfo ci) {
 		if (!(getItem() instanceof ArchitectTool)) return;
 		ci.cancel();
 	}

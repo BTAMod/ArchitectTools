@@ -1,7 +1,6 @@
 package com.github.kill05.mixins;
 
 import com.github.kill05.items.tool.ArchitectTool;
-import com.github.kill05.utils.ItemUtils;
 import net.minecraft.client.render.item.model.ItemModelStandard;
 import net.minecraft.core.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
@@ -12,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 	value = ItemModelStandard.class,
 	remap = false
 )
-public class ItemModelStandardMixin {
+public abstract class ItemModelStandardMixin {
 
 	@Redirect(
 		method = "renderItemOverlayIntoGUI",
@@ -20,6 +19,6 @@ public class ItemModelStandardMixin {
 	)
 	public boolean redirectRenderItemOverlay(ItemStack item) {
 		if(!(item.getItem() instanceof ArchitectTool)) return item.isItemDamaged();
-		return !ItemUtils.isBroken(item) && item.isItemDamaged();
+		return !ArchitectTool.isToolBroken(item) && item.isItemDamaged();
 	}
 }

@@ -5,7 +5,6 @@ import com.github.kill05.items.part.ArchitectPart;
 import com.github.kill05.items.part.PartType;
 import com.github.kill05.materials.ArchitectMaterial;
 import com.github.kill05.materials.MaterialType;
-import com.github.kill05.utils.ItemUtils;
 import net.minecraft.client.render.stitcher.IconCoordinate;
 import net.minecraft.core.item.ItemStack;
 
@@ -57,7 +56,7 @@ public class ToolPartInfo {
 
 	public IconCoordinate getIcon(ItemStack itemStack) {
 		ArchitectMaterial material = ArchitectTools.getToolPart(itemStack, this);
-		return MaterialType.getTexture(ItemUtils.isBroken(itemStack) ? brokenTexture : texture, material);
+		return MaterialType.getTexture(ArchitectTool.isToolBroken(itemStack) ? brokenTexture : texture, material);
 	}
 
 	public ArchitectPart part() {

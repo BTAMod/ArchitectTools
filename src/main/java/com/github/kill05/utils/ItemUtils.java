@@ -51,10 +51,4 @@ public final class ItemUtils {
 			§ethen set 'DisableVanillaTools' to 'false'.""";
 	}
 
-
-	public static boolean isBroken(ItemStack item) {
-		if(!item.isItemStackDamageable()) return false;
-		return item.getMetadata() > item.getMaxDamage();
-	}
-
 }
