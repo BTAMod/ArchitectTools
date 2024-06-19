@@ -1,5 +1,6 @@
 package com.github.kill05.architectstools.config;
 
+import com.github.kill05.architectstools.ArchitectTools;
 import turniplabs.halplibe.util.TomlConfigHandler;
 import turniplabs.halplibe.util.toml.Toml;
 
@@ -27,7 +28,7 @@ public final class ArchitectConfig {
 		toml.addCategory("Change how the game and the mod are played.", "Gameplay");
 		toml.addEntry("Gameplay.DisableVanillaTools", "Set to true to disable vanilla tools so players can only use tools from Architect's Tools.", false);
 
-		CONFIG = new TomlConfigHandler("architectstools", toml);
+		CONFIG = new TomlConfigHandler(ArchitectTools.MOD_ID, toml);
 
 		PART_ID = toml.get("IDs.Parts", Integer.class);
 		TOOL_ID = toml.get("IDs.Tools", Integer.class);
