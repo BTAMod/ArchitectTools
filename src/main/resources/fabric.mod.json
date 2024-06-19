@@ -19,13 +19,13 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-			"com.github.kill05.ArchitectTools"
+      "com.github.kill05.architectstools.ArchitectTools"
     ],
 		"afterClientStart": [
-			"com.github.kill05.ArchitectTools"
+          "com.github.kill05.architectstools.ArchitectTools"
 		],
 		"recipesReady": [
-			"com.github.kill05.ArchitectTools"
+          "com.github.kill05.architectstools.ArchitectTools"
 		]
 	},
   "mixins": [
