@@ -61,6 +61,9 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	public static final Item BLANK_PATTERN = item("blank_pattern", "blank_pattern");
 
 	public static final Block ARCHITECT_TABLE_BLOCK = new BlockBuilder(MOD_ID)
+		.setTopTexture(MOD_ID + ":block/architect_table_top")
+		.setSideTextures(MOD_ID + ":block/architect_table_side")
+		.setBottomTexture("minecraft" + ":block/planks_oak")
 		.setHardness(2.5F)
 		.setResistance(5.0F)
 		.setFlammability(10, 10)
