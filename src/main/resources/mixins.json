@@ -1,17 +1,17 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.github.kill05.mixins",
+  "package": "com.github.kill05.architectstools.mixins",
   "compatibilityLevel": "JAVA_17",
   "plugin": "com.github.kill05.architectstools.MixinConfigPlugin",
   "mixins": [
-    "com.github.kill05.architectstools.mixins.CreativeEntryMixin",
-    "com.github.kill05.architectstools.mixins.ItemModelStandardMixin",
-    "com.github.kill05.architectstools.mixins.ItemStackMixin",
-    "com.github.kill05.architectstools.mixins.StringTagMixin",
-    "com.github.kill05.architectstools.mixins.disablevanilla.ItemToolMixin",
-    "com.github.kill05.architectstools.mixins.disablevanilla.ItemToolPickaxeMixin",
-    "com.github.kill05.architectstools.mixins.disablevanilla.ItemToolSwordMixin"
+    "CreativeEntryMixin",
+    "ItemModelStandardMixin",
+    "ItemStackMixin",
+    "StringTagMixin",
+    "disablevanilla.ItemToolMixin",
+    "disablevanilla.ItemToolPickaxeMixin",
+    "disablevanilla.ItemToolSwordMixin"
   ],
   "client": [
   ],
