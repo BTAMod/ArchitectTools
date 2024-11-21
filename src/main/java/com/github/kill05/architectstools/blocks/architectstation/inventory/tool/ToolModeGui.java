@@ -34,7 +34,7 @@ public class ToolModeGui extends ArchitectStationGui<ArchitectTool> {
 			drawTexturedModalRect(
 				x + container.alignX(5.5f),
 				y + container.alignY(2.5f + parts++),
-				xSize, 16 * info.part().ordinal(), 16, 16
+				xSize, 16 * (info.part().ordinal() - 1), 16, 16
 			);
 		}
 	}

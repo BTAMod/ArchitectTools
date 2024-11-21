@@ -21,6 +21,9 @@
     "main": [
 			"com.github.kill05.architectstools.ArchitectTools"
     ],
+		"beforeGameStart": [
+			"com.github.kill05.architectstools.ArchitectTools"
+		],
 		"afterClientStart": [
 			"com.github.kill05.architectstools.ArchitectTools"
 		],

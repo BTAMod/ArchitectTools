@@ -2,6 +2,7 @@ package com.github.kill05.architectstools.items.tool;
 
 import com.github.kill05.architectstools.items.part.ArchitectPart;
 import com.github.kill05.architectstools.items.part.statistics.PartStatistic;
+import net.minecraft.core.entity.EntityLiving;
 import net.minecraft.core.block.Block;
 import net.minecraft.core.block.tag.BlockTags;
 import net.minecraft.core.item.ItemStack;
@@ -23,9 +24,9 @@ public class ArchitectPickaxe extends ArchitectTool {
 	}
 
 	@Override
-	public boolean canHarvestBlock(ItemStack itemStack, Block block) {
+	public boolean canHarvestBlock(EntityLiving mob, ItemStack itemStack, Block block) {
 		Integer requiredLevel = ItemToolPickaxe.miningLevels.get(block);
-		if(requiredLevel == null) return super.canHarvestBlock(itemStack, block);
+		if(requiredLevel == null) return super.canHarvestBlock(mob, itemStack, block);
 		return getStatistic(itemStack, PartStatistic.MINING_LEVEL) >= requiredLevel;
 	}
 

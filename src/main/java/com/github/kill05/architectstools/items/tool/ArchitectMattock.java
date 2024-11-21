@@ -28,7 +28,7 @@ public class ArchitectMattock extends ArchitectTool {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack itemstack, EntityPlayer entityplayer, World world, int blockX, int blockY, int blockZ, Side side, double xPlaced, double yPlaced) {
-		return Item.toolHoeDiamond.onItemUse(itemstack, entityplayer, world, blockX, blockY, blockZ, side, xPlaced, yPlaced);
+	public boolean onUseItemOnBlock(ItemStack itemstack, EntityPlayer entityplayer, World world, int blockX, int blockY, int blockZ, Side side, double xPlaced, double yPlaced) {
+		return Item.toolHoeDiamond.onUseItemOnBlock(itemstack, entityplayer, world, blockX, blockY, blockZ, side, xPlaced, yPlaced);
 	}
 }

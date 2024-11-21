@@ -13,23 +13,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-//todo: remove once 7.2_pre2 comes out
+//todo: remove once ~~7.2_pre2~~, ~~7.2_01~~, 7.3? comes out
 @Mixin(value = ItemStack.class, remap = false)
 public abstract class ItemStackMixin {
 
 	@Shadow
 	public abstract Item getItem();
-
-	@Inject(
-		method = "canHarvestBlock",
-		at = @At(value = "HEAD"),
-		cancellable = true
-	)
-	public void canHarvestBlockMixin(Block block, CallbackInfoReturnable<Boolean> cir) {
-		if (getItem() instanceof ArchitectTool tool) {
-			cir.setReturnValue(tool.canHarvestBlock(getThis(), block));
-		}
-	}
 
 	@Inject(
 		method = "getMaxDamage",
@@ -61,6 +50,7 @@ public abstract class ItemStackMixin {
 		if(ArchitectTool.isToolBroken(getThis())) ci.cancel();
 	}
 
+    // Instead of this, make Item.getMaxDamageForStack return -1, which tricks ItemStack::isItemStackDamageable
 	@Inject(
 		method = "damageItem",
 		at = @At(value = "FIELD", target = "Lnet/minecraft/core/item/ItemStack;stackSize:I", ordinal = 1),
@@ -71,6 +61,7 @@ public abstract class ItemStackMixin {
 		ci.cancel();
 	}
 
+    // See previous comment
 	@Inject(
 		method = "getDamageVsEntity",
 		at = @At(value = "HEAD"),
@@ -81,7 +72,6 @@ public abstract class ItemStackMixin {
 			cir.setReturnValue(item.getDamageVsEntity(entity, getThis()));
 		}
 	}
-
 
 	@Unique
 	private ItemStack getThis() {

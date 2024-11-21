@@ -30,10 +30,10 @@ public final class ArchitectConfig {
 
 		CONFIG = new TomlConfigHandler(ArchitectTools.MOD_ID, toml);
 
-		PART_ID = toml.get("IDs.Parts", Integer.class);
-		TOOL_ID = toml.get("IDs.Tools", Integer.class);
-		ITEM_ID = toml.get("IDs.Items", Integer.class);
-		BLOCK_ID = toml.get("IDs.Blocks", Integer.class);
+		PART_ID = CONFIG.getInt("IDs.Parts");
+		TOOL_ID = CONFIG.getInt("IDs.Tools");
+		ITEM_ID = CONFIG.getInt("IDs.Items");
+		BLOCK_ID = CONFIG.getInt("IDs.Blocks");
 	}
 
 	private ArchitectConfig() {

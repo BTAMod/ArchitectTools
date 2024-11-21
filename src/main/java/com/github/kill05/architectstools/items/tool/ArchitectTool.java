@@ -10,6 +10,7 @@ import com.github.kill05.architectstools.items.model.ArchitectToolModel;
 import com.github.kill05.architectstools.items.part.statistics.PartStatistic;
 import com.github.kill05.architectstools.items.part.statistics.PartStatistics;
 import net.minecraft.core.block.Block;
+import net.minecraft.core.util.helper.Side;
 import net.minecraft.core.data.tag.Tag;
 import net.minecraft.core.entity.Entity;
 import net.minecraft.core.entity.EntityLiving;
@@ -74,21 +75,25 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 	}
 
 
-	//todo: remove once 7.2-pre2 comes out (need itemstack argument)
 	@Override
-	public boolean canHarvestBlock(Block block) {
-		ArchitectTools.LOGGER.warn("canHarvestBlock(Block) was called on an ArchitectTool. canHarvestBlock(ItemStack, Block) should be used instead.");
-		return super.canHarvestBlock(block);
+	public boolean canHarvestBlock(EntityLiving mob, ItemStack item, Block block) {
+		if(isToolBroken(item)) return false;
+
+		for (Tag<Block> mineableTag : mineableTags) {
+			if(block.hasTag(mineableTag)) return true;
+		}
+
+		return false;
 	}
 
-	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
+	//todo: replace once 7.3 comes out (need itemstack argument)
 	@Override
 	public int getDamageVsEntity(Entity entity) {
 		ArchitectTools.LOGGER.warn("getDamageVsEntity(Entity) was called on an ArchitectTool. getDamageVsEntity(Entity, Itemstack) should be used instead.");
 		return super.getDamageVsEntity(entity);
 	}
 
-	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
+	//todo: replace once 7.3 comes out (need itemstack argument)
 	@Override
 	public int getMaxDamage() {
 		ArchitectTools.LOGGER.warn("getMaxDamage() was called on an ArchitectTool. getMaxDamage(ItemStack) should be used instead.");
@@ -98,18 +103,7 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 	@Override
 	public float getStrVsBlock(ItemStack itemStack, Block block) {
 		if(isToolBroken(itemStack)) return super.getStrVsBlock(itemStack, block);
-		return canHarvestBlock(itemStack, block) ? getStatistic(itemStack, PartStatistic.MINING_SPEED) : super.getStrVsBlock(itemStack, block);
-	}
-
-	//todo: replace once 7.2-pre2 comes out (need itemstack argument)
-	public boolean canHarvestBlock(ItemStack itemStack, Block block) {
-		if(isToolBroken(itemStack)) return false;
-
-		for (Tag<Block> mineableTag : mineableTags) {
-			if(block.hasTag(mineableTag)) return true;
-		}
-
-		return false;
+		return canHarvestBlock(null, itemStack, block) ? getStatistic(itemStack, PartStatistic.MINING_SPEED) : super.getStrVsBlock(itemStack, block);
 	}
 
 	public int getDamageVsEntity(Entity entity, ItemStack itemStack) {
@@ -123,7 +117,7 @@ public abstract class ArchitectTool extends Item implements IArchitectItem, ICus
 
 
 	@Override
-	public boolean onBlockDestroyed(World world, ItemStack itemstack, int blockId, int x, int y, int z, EntityLiving entityliving) {
+	public boolean onBlockDestroyed(World world, ItemStack itemstack, int blockId, int x, int y, int z, Side side, EntityLiving entityliving) {
 		Block block = Block.blocksList[blockId];
 		if (block != null && (block.getHardness() > 0.0F || this.isSilkTouch())) {
 			itemstack.damageItem(1, entityliving);

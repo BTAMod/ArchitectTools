@@ -15,7 +15,7 @@ public abstract class PartStatistic<V extends Number> {
 	public static final List<PartStatistic<?>> VALUES = new ArrayList<>();
 	public static final PartStatistic<Integer> DURABILITY = new DurabilityStatistic("durability");
 	public static final PartStatistic<Integer> MINING_LEVEL = new MiningLevelStatistic("mining_level");
-	public static final PartStatistic<Float> MINING_SPEED = new FloatStatistic("mining_speed", "§3"); //todo: §<78a0cd> once 7.2-pre2 is out
+	public static final PartStatistic<Float> MINING_SPEED = new FloatStatistic("mining_speed", "§<78a0cd>");
 	public static final PartStatistic<Float> ENTITY_DAMAGE = new FloatStatistic("entity_damage", "§e");
 
 	private final String id;

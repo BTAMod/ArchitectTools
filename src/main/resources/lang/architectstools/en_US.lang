@@ -18,6 +18,8 @@ item.architectstools.shortsword_tool.name = %s Shortsword
 
 # Item descriptions
 item.architectstools.blank_pattern.desc = Used in the Architect's Table together with a material to craft tool parts.
+
+item.architectstools.repair_kit_part.desc = Combine in a crafting table to fix your tool
 item.architectstools.tool_rod_part.desc = A sturdy shaft used as the handle of tools.
 item.architectstools.tool_binding_part.desc = A robust binding that secures a tool's head with its handle.
 item.architectstools.pickaxe_head_part.desc = A hefty pickaxe head used to craft pickaxes.
@@ -41,23 +43,33 @@ tile.architectstools.architect_table.desc = A table used to craft tool parts and
 
 
 # Mining levels
-mining_level.architectstools.0.name = §7Stone
-mining_level.architectstools.1.name = §0Iron
-mining_level.architectstools.2.name = §3Diamond
-mining_level.architectstools.3.name = §aObsidian
-mining_level.architectstools.4.name = §bCobalt
+mining_level.architectstools.0.name = §7Stone (1)
+mining_level.architectstools.1.name = §0Iron (2)
+mining_level.architectstools.2.name = §3Diamond (3)
+mining_level.architectstools.3.name = §aObsidian (4)
+mining_level.architectstools.4.name = §bCobalt (5)
 
 # Materials
 material.architectstools.wood.name = Wooden
+material.architectstools.wood.desc = Made of trees. Provides a comfortable handle.
 material.architectstools.stone.name = Stone
+material.architectstools.stone.desc = Rock on dude!
 material.architectstools.flint.name = Flint
+material.architectstools.flint.desc = It has a sharp edge.
 material.architectstools.bone.name = Bone
+material.architectstools.bone.desc = Rigid and hard, with a splintering end.
 material.architectstools.cactus.name = Cactus
+material.architectstools.cactus.desc = Prickly as a pear, you don't want to be the the other end of this!
 material.architectstools.paper.name = Paper
+material.architectstools.paper.desc = A thin material, good for taking notes.
 material.architectstools.iron.name = Iron
+material.architectstools.iron.desc = Strong and metallic.
 material.architectstools.gold.name = Gold
+material.architectstools.gold.desc = Delicate and metallic.
 material.architectstools.steel.name = Steel
+material.architectstools.steel.desc = Stronger and metallic-er.
 material.architectstools.obsidian.name = Obsidian
+material.architectstools.obsidian.desc = Glassy, sharp, and brittle.
 
 # Parts
 part_type.architectstools.head.name = Head

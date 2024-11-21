@@ -23,7 +23,7 @@ public enum MaterialType {
 
 	public static IconCoordinate getTexture(String texture, ArchitectMaterial material) {
 		String end = (material != null ? material.type().getTextureName() : "");
-		String path = ArchitectTools.MOD_ID + ":item/" + texture;
+		String path = (material != null ? material.mod_id : ArchitectTools.MOD_ID) + ":item/" + texture;
 		if(TextureRegistry.hasTexture(path + end)) return TextureRegistry.getTexture(path + end);
 		return TextureRegistry.getTexture(path);
 	}

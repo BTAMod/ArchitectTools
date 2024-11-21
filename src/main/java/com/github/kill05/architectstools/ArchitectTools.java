@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import turniplabs.halplibe.helper.*;
 import turniplabs.halplibe.util.ClientStartEntrypoint;
+import turniplabs.halplibe.util.GameStartEntrypoint;
 import turniplabs.halplibe.util.RecipeEntrypoint;
 
 import java.io.IOException;
@@ -47,42 +48,18 @@ import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 
 
-public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, ClientStartEntrypoint {
+public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, ClientStartEntrypoint, GameStartEntrypoint {
 
 	public static final String MOD_ID = "architectstools";
 	public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 	public static final int MAX_TOOL_PARTS = 3;
 
-	public static final RecipeNamespace RECIPE_NAMESPACE = new RecipeNamespace();
-	public static final RecipeGroup<RecipeEntryCrafting<?, ?>> RECIPE_WORKBENCH = new RecipeGroup<>(new RecipeSymbol(new ItemStack(Block.workbench)));
-
+	public static RecipeNamespace RECIPE_NAMESPACE;
+	public static RecipeGroup<RecipeEntryCrafting<?, ?>> RECIPE_WORKBENCH;
 
 	// Items and Blocks
-	public static final Item BLANK_PATTERN = item("blank_pattern", "blank_pattern");
-
-	public static final Block ARCHITECT_TABLE_BLOCK = new BlockBuilder(MOD_ID)
-		.setTopTexture(MOD_ID + ":block/architect_table_top")
-		.setSideTextures(MOD_ID + ":block/architect_table_side")
-		.setBottomTexture("minecraft" + ":block/planks_oak")
-		.setHardness(2.5F)
-		.setResistance(5.0F)
-		.setFlammability(10, 10)
-		.setBlockSound(BlockSounds.WOOD)
-		.setTags(BlockTags.MINEABLE_BY_AXE)
-		.build(new ArchitectTableBlock());
-
-
-	public static <T extends Item> T item(T item, String texture) {
-		return new ItemBuilder(MOD_ID)
-			.setIcon(MOD_ID + ":item/" + texture)
-			.build(item);
-	}
-
-	public static Item item(String name, String texture) {
-		return new ItemBuilder(MOD_ID)
-			.setIcon(MOD_ID + ":item/" + texture)
-			.build(new Item(name, ArchitectConfig.ITEM_ID++));
-	}
+	public static Item BLANK_PATTERN;
+	public static Block ARCHITECT_TABLE_BLOCK;
 
 	// Materials
 	public static @Nullable ArchitectMaterial getMaterial(@Nullable String id) {
@@ -232,12 +209,22 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 	// Code
 	@Override
 	public void onInitialize() {
+	}
+	@Override
+	public void afterGameStart() {
+	}
+	@Override
+	public void beforeGameStart() {
+	}
+
+	public void init() {
 		// Register materials and items
 		ClassUtils.initializeClasses(
 			ArchitectMaterial.class,
 			ArchitectPart.class,
 			ArchitectTool.class
 		);
+        ArchitectItems.init();
 
 		ItemStack parent = BLANK_PATTERN.getDefaultStack();
 		for (ArchitectMaterial material : ArchitectMaterial.MATERIAL_REGISTRY) {
@@ -256,7 +243,6 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	@Override
 	public void beforeClientStart() {
-
 	}
 
 	@Override
@@ -314,7 +300,7 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 		}
 
 		try {
-			TextureRegistry.initializeAllFiles(MOD_ID, TextureRegistry.itemAtlas);
+			TextureRegistry.initializeAllFiles(MOD_ID, TextureRegistry.itemAtlas, true);
 		} catch (URISyntaxException | IOException e) {
 			throw new RuntimeException("Failed to load textures.", e);
 		}
@@ -326,6 +312,8 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	@Override
 	public void onRecipesReady() {
+        init();
+
 		ArchitectMaterial.lock();
 		for (ArchitectMaterial material : ArchitectMaterial.MATERIAL_REGISTRY) {
 			material.initGroups();
@@ -349,8 +337,11 @@ public final class ArchitectTools implements ModInitializer, RecipeEntrypoint, C
 
 	@Override
 	public void initNamespaces() {
+        RECIPE_NAMESPACE = new RecipeNamespace();
+        RECIPE_WORKBENCH = new RecipeGroup<>(new RecipeSymbol(new ItemStack(Block.workbench)));
 		Registries.RECIPES.register(MOD_ID, RECIPE_NAMESPACE);
 		RECIPE_NAMESPACE.register("workbench", RECIPE_WORKBENCH);
 	}
 
 }
+
